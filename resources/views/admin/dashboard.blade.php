@@ -1,0 +1,105 @@
+@extends('layouts.admin')
+
+@section('page_title', 'Dashboard')
+
+@section('content')
+<div class="dashboard">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon orders">📦</div>
+            <div class="stat-content">
+                <span class="stat-value">{{ $stats['total_orders'] }}</span>
+                <span class="stat-label">Today's Orders</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue">💰</div>
+            <div class="stat-content">
+                <span class="stat-value">${{ number_format($stats['total_revenue'], 0) }}</span>
+                <span class="stat-label">Today's Revenue</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon pending">⏳</div>
+            <div class="stat-content">
+                <span class="stat-value">{{ $stats['pending_orders'] }}</span>
+                <span class="stat-label">Pending Orders</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon completed">✓</div>
+            <div class="stat-content">
+                <span class="stat-value">{{ $stats['completed_orders'] }}</span>
+                <span class="stat-label">Completed Today</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <a href="{{ route('admin.items.create') }}" class="action-btn">
+            <span class="action-icon">➕</span>
+            Add Menu Item
+        </a>
+        <a href="{{ route('admin.orders.index', ['status' => 'new']) }}" class="action-btn">
+            <span class="action-icon">📝</span>
+            New Orders
+        </a>
+        <a href="{{ route('admin.categories.index') }}" class="action-btn">
+            <span class="action-icon">📁</span>
+            Manage Categories
+        </a>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent Orders</h2>
+            <a href="{{ route('admin.orders.index') }}" class="view-all-link">View All →</a>
+        </div>
+        <div class="card-body">
+            @if($recentOrders->count() > 0)
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentOrders as $order)
+                        <tr>
+                            <td><strong>{{ $order->order_number }}</strong></td>
+                            <td>{{ $order->customer_name }}</td>
+                            <td>{{ $order->items->count() }} items</td>
+                            <td>${{ number_format($order->total, 0) }}</td>
+                            <td>
+                                <span class="status-badge status-{{ $order->status }}">
+                                    {{ $order->status_label }}
+                                </span>
+                            </td>
+                            <td>{{ $order->created_at->diffForHumans() }}</td>
+                            <td>
+                                <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm">View</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @else
+            <div class="empty-state-sm">
+                <p>No orders yet today.</p>
+            </div>
+            @endif
+        </div>
+    </div>
+</div>
+@endsection
