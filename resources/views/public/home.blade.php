@@ -78,18 +78,25 @@
             <div class="ftco-46">
                 <!-- First Row: Image | Text | Image -->
                 <div class="ftco-46-row d-flex flex-column flex-lg-row">
-                    <div class="ftco-46-image" style="background-image: url({{ isset($featuredItems[0]) && $featuredItems[0]->image ? asset('storage/' . $featuredItems[0]->image) : asset('images/img_1.jpg') }});"></div>
+                    @php
+                        $item0 = $featuredItems[0] ?? null;
+                        $item0Json = $item0 ? json_encode([
+                            'id' => $item0->id,
+                            'name' => $item0->name,
+                            'description' => $item0->description,
+                            'price' => $item0->price,
+                            'discount_price' => $item0->discount_price,
+                            'photo_path' => $item0->image
+                        ]) : '{}';
+                    @endphp
+                    <div class="ftco-46-image" style="background-image: url({{ isset($featuredItems[0]) && $featuredItems[0]->image ? asset('storage/' . $featuredItems[0]->image) : asset('images/img_1.jpg') }}); cursor: pointer;" onclick='openItemModal({{ $item0Json }})'></div>
                     <div class="ftco-46-text ftco-46-arrow-left">
                         @if(isset($featuredItems[0]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[0]->category ? $featuredItems[0]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[0]->name }}</h3>
+                        <h3 class="ftco-46-heading" style="cursor: pointer;" onclick='openItemModal({{ $item0Json }})'>{{ $featuredItems[0]->name }}</h3>
                         <p class="mb-5">{{ Str::limit($featuredItems[0]->description, 120) }}</p>
                         <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[0]->price, 2) }}</strong></p>
-                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
-                            @csrf
-                            <input type="hidden" name="menu_item_id" value="{{ $featuredItems[0]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
-                        </form>
+                        <button type="button" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;" onclick='openItemModal({{ $item0Json }})'>+</button>
                         @else
                         <h4 class="ftco-46-subheading">Vegies</h4>
                         <h3 class="ftco-46-heading">Beef Empanadas</h3>
@@ -102,17 +109,44 @@
 
                 <!-- Second Row: Text | Image | Text -->
                 <div class="ftco-46-row d-flex flex-column flex-lg-row">
+                    @php
+                        $item2 = $featuredItems[2] ?? null;
+                        $item2Json = $item2 ? json_encode([
+                            'id' => $item2->id,
+                            'name' => $item2->name,
+                            'description' => $item2->description,
+                            'price' => $item2->price,
+                            'discount_price' => $item2->discount_price,
+                            'photo_path' => $item2->image
+                        ]) : '{}';
+                        
+                        $item3 = $featuredItems[3] ?? null;
+                        $item3Json = $item3 ? json_encode([
+                            'id' => $item3->id,
+                            'name' => $item3->name,
+                            'description' => $item3->description,
+                            'price' => $item3->price,
+                            'discount_price' => $item3->discount_price,
+                            'photo_path' => $item3->image
+                        ]) : '{}';
+                        
+                        $item1 = $featuredItems[1] ?? null;
+                        $item1Json = $item1 ? json_encode([
+                            'id' => $item1->id,
+                            'name' => $item1->name,
+                            'description' => $item1->description,
+                            'price' => $item1->price,
+                            'discount_price' => $item1->discount_price,
+                            'photo_path' => $item1->image
+                        ]) : '{}';
+                    @endphp
                     <div class="ftco-46-text ftco-46-arrow-right">
                         @if(isset($featuredItems[2]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[2]->category ? $featuredItems[2]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[2]->name }}</h3>
+                        <h3 class="ftco-46-heading" style="cursor: pointer;" onclick='openItemModal({{ $item2Json }})'>{{ $featuredItems[2]->name }}</h3>
                         <p class="mb-5">{{ Str::limit($featuredItems[2]->description, 100) }}</p>
                         <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[2]->price, 2) }}</strong></p>
-                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
-                            @csrf
-                            <input type="hidden" name="menu_item_id" value="{{ $featuredItems[2]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
-                        </form>
+                        <button type="button" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;" onclick='openItemModal({{ $item2Json }})'>+</button>
                         @else
                         <h4 class="ftco-46-subheading">Food</h4>
                         <h3 class="ftco-46-heading">Buttermilk Chicken Jibaritos</h3>
@@ -120,28 +154,20 @@
                         <p><a href="{{ route('menu') }}" class="btn-link">Learn More <span class="ion-android-arrow-forward"></span></a></p>
                         @endif
                     </div>
-                    <div class="ftco-46-image" style="background-image: url({{ isset($featuredItems[3]) && $featuredItems[3]->image ? asset('storage/' . $featuredItems[3]->image) : asset('images/img_3.jpg') }});"></div>
+                    <div class="ftco-46-image" style="background-image: url({{ isset($featuredItems[3]) && $featuredItems[3]->image ? asset('storage/' . $featuredItems[3]->image) : asset('images/img_3.jpg') }}); cursor: pointer;" onclick='openItemModal({{ $item3Json }})'></div>
                     <div class="ftco-46-text ftco-46-arrow-up">
                         @if(isset($featuredItems[3]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[3]->category ? $featuredItems[3]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[3]->name }}</h3>
+                        <h3 class="ftco-46-heading" style="cursor: pointer;" onclick='openItemModal({{ $item3Json }})'>{{ $featuredItems[3]->name }}</h3>
                         <p class="mb-5">{{ Str::limit($featuredItems[3]->description, 100) }}</p>
                         <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[3]->price, 2) }}</strong></p>
-                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
-                            @csrf
-                            <input type="hidden" name="menu_item_id" value="{{ $featuredItems[3]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
-                        </form>
+                        <button type="button" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;" onclick='openItemModal({{ $item3Json }})'>+</button>
                         @elseif(isset($featuredItems[1]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[1]->category ? $featuredItems[1]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[1]->name }}</h3>
+                        <h3 class="ftco-46-heading" style="cursor: pointer;" onclick='openItemModal({{ $item1Json }})'>{{ $featuredItems[1]->name }}</h3>
                         <p class="mb-5">{{ Str::limit($featuredItems[1]->description, 100) }}</p>
                         <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[1]->price, 2) }}</strong></p>
-                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
-                            @csrf
-                            <input type="hidden" name="menu_item_id" value="{{ $featuredItems[1]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
-                        </form>
+                        <button type="button" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;" onclick='openItemModal({{ $item1Json }})'>+</button>
                         @else
                         <h4 class="ftco-46-subheading">Food</h4>
                         <h3 class="ftco-46-heading">Chicken Chimichurri Croquettes</h3>

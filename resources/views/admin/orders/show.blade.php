@@ -131,6 +131,12 @@
                             <td colspan="3">Subtotal</td>
                             <td>${{ number_format($order->subtotal, 0) }}</td>
                         </tr>
+                        @if($order->discount_amount > 0)
+                        <tr style="color: #2e7d32;">
+                            <td colspan="3">Discount ({{ $order->coupon_code }})</td>
+                            <td>-${{ number_format($order->discount_amount, 0) }}</td>
+                        </tr>
+                        @endif
                         @if($order->delivery_fee > 0)
                         <tr>
                             <td colspan="3">Delivery Fee</td>

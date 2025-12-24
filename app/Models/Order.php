@@ -23,6 +23,8 @@ class Order extends Model
         'status',
         'subtotal',
         'delivery_fee',
+        'discount_amount',
+        'coupon_code',
         'total',
     ];
 

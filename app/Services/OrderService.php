@@ -31,7 +31,12 @@ class OrderService
                 $deliveryFee = (float) Setting::get('delivery_fee', 50);
             }
             
-            $total = $subtotal + $deliveryFee;
+            // Get coupon discount from session
+            $coupon = session('coupon');
+            $discountAmount = $coupon['discount'] ?? 0;
+            $couponCode = $coupon['code'] ?? null;
+            
+            $total = $subtotal - $discountAmount + $deliveryFee;
 
             // Create order
             $order = Order::create([
@@ -48,6 +53,8 @@ class OrderService
                 'status' => Order::STATUS_NEW,
                 'subtotal' => $subtotal,
                 'delivery_fee' => $deliveryFee,
+                'discount_amount' => $discountAmount,
+                'coupon_code' => $couponCode,
                 'total' => $total,
             ]);
 

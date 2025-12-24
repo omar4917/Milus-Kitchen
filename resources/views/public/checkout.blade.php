@@ -438,9 +438,40 @@
                     </div>
                     @endforeach
                 </div>
+                
+                <!-- Coupon Code Input -->
+                <div class="coupon-section" id="couponSection" style="padding: 15px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin-bottom: 15px;">
+                    @php $appliedCoupon = session('coupon'); @endphp
+                    <div id="appliedCouponView" style="{{ $appliedCoupon ? '' : 'display:none;' }}">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #e8f5e9; padding: 12px; border-radius: 8px;">
+                            <span style="color: #2e7d32; font-weight: 600;">
+                                🎉 <strong id="appliedCouponCode">{{ $appliedCoupon['code'] ?? '' }}</strong> applied!
+                            </span>
+                            <button type="button" onclick="removeCoupon()" style="background: none; border: none; color: #c62828; cursor: pointer; font-size: 14px;">✕ Remove</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="coupon_id" id="couponIdInput" value="{{ $appliedCoupon['id'] ?? '' }}">
+                    <div id="couponInputView" style="{{ $appliedCoupon ? 'display:none;' : '' }}">
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="couponInput" placeholder="Enter coupon code" 
+                                   style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                            <button type="button" id="applyBtn" onclick="applyCoupon()" 
+                                    style="padding: 12px 20px; background: #ff7a5c; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                Apply
+                            </button>
+                        </div>
+                        <p id="couponError" style="color: #e74c3c; font-size: 12px; margin-top: 8px; display: none;"></p>
+                        <p id="couponSuccess" style="color: #2e7d32; font-size: 12px; margin-top: 8px; display: none;"></p>
+                    </div>
+                </div>
+                
                 <div class="summary-row">
                     <span>Subtotal</span>
                     <span>${{ number_format($cart['subtotal'], 0) }}</span>
+                </div>
+                <div class="summary-row" id="discountRow" style="color: #2e7d32; {{ $appliedCoupon ? '' : 'display:none;' }}">
+                    <span>Discount (<span id="discountCode">{{ $appliedCoupon['code'] ?? '' }}</span>)</span>
+                    <span id="discountAmount">-${{ number_format($appliedCoupon['discount'] ?? 0, 0) }}</span>
                 </div>
                 <div class="summary-row" id="deliveryFeeRow">
                     <span>Delivery Fee</span>
@@ -448,7 +479,11 @@
                 </div>
                 <div class="summary-row summary-total">
                     <span>Total</span>
-                    <span id="totalAmount">${{ number_format($cart['subtotal'] + $deliveryFee, 0) }}</span>
+                    @php
+                        $discount = $appliedCoupon['discount'] ?? 0;
+                        $total = $cart['subtotal'] - $discount + $deliveryFee;
+                    @endphp
+                    <span id="totalAmount">${{ number_format($total, 0) }}</span>
                 </div>
                 <button type="submit" class="btn-place-order">Place Order</button>
                 <a href="{{ route('cart') }}" class="btn-back">← Back to Cart</a>
@@ -463,6 +498,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const subtotal = {{ $cart['subtotal'] }};
     const deliveryFee = {{ $deliveryFee }};
+    const discount = {{ session('coupon.discount') ?? 0 }};
     
     const deliveryOptions = document.querySelectorAll('input[name="delivery_type"]');
     const addressGroup = document.getElementById('addressGroup');
@@ -483,13 +519,11 @@ document.addEventListener('DOMContentLoaded', function() {
         addressGroup.style.display = isDelivery ? 'block' : 'none';
         addressGroup.querySelector('textarea').required = isDelivery;
         
-        if (isDelivery) {
-            deliveryFeeAmount.textContent = '$' + deliveryFee;
-            totalAmount.textContent = '$' + (subtotal + deliveryFee);
-        } else {
-            deliveryFeeAmount.textContent = 'Free';
-            totalAmount.textContent = '$' + subtotal;
-        }
+        const currentFee = isDelivery ? deliveryFee : 0;
+        const total = subtotal - discount + currentFee;
+        
+        deliveryFeeAmount.textContent = isDelivery ? '$' + deliveryFee : 'Free';
+        totalAmount.textContent = '$' + total;
     }
     
     function updatePayment() {
@@ -503,5 +537,80 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDelivery();
     updatePayment();
 });
+
+function applyCoupon() {
+    const code = document.getElementById('couponInput').value.trim();
+    if (!code) return;
+    
+    const btn = document.getElementById('applyBtn');
+    btn.textContent = '...';
+    btn.disabled = true;
+    
+    fetch('{{ route("cart.coupon") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ coupon_code: code })
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.textContent = 'Apply';
+        btn.disabled = false;
+        
+        if (data.success) {
+            // Update UI
+            document.getElementById('appliedCouponCode').textContent = data.code;
+            document.getElementById('couponIdInput').value = data.id;
+            document.getElementById('discountCode').textContent = data.code;
+            document.getElementById('discountAmount').textContent = '-$' + Math.round(data.discount);
+            document.getElementById('discountRow').style.display = '';
+            document.getElementById('appliedCouponView').style.display = '';
+            document.getElementById('couponInputView').style.display = 'none';
+            
+            // Update total
+            updateTotalWithDiscount(data.discount);
+        } else {
+            document.getElementById('couponError').textContent = data.message || 'Invalid coupon';
+            document.getElementById('couponError').style.display = 'block';
+            setTimeout(() => { document.getElementById('couponError').style.display = 'none'; }, 3000);
+        }
+    })
+    .catch(() => {
+        btn.textContent = 'Apply';
+        btn.disabled = false;
+        document.getElementById('couponError').textContent = 'Error applying coupon';
+        document.getElementById('couponError').style.display = 'block';
+    });
+}
+
+function removeCoupon() {
+    fetch('{{ route("cart.coupon.remove") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        }
+    })
+    .then(() => {
+        document.getElementById('appliedCouponView').style.display = 'none';
+        document.getElementById('couponInputView').style.display = '';
+        document.getElementById('discountRow').style.display = 'none';
+        document.getElementById('couponIdInput').value = '';
+        document.getElementById('couponInput').value = '';
+        updateTotalWithDiscount(0);
+    });
+}
+
+function updateTotalWithDiscount(discountValue) {
+    discount = discountValue;
+    const isDelivery = document.querySelector('input[name="delivery_type"]:checked').value === 'delivery';
+    const currentFee = isDelivery ? deliveryFee : 0;
+    const total = subtotal - discount + currentFee;
+    document.getElementById('totalAmount').textContent = '$' + Math.round(total);
+}
 </script>
 @endpush

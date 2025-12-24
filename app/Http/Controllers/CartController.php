@@ -105,6 +105,9 @@ class CartController extends Controller
         $coupon = Coupon::where('code', strtoupper($validated['coupon_code']))->first();
 
         if (!$coupon) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Coupon not found.']);
+            }
             return back()->with('error', 'Coupon not found.');
         }
 
@@ -113,18 +116,32 @@ class CartController extends Controller
         if (!$coupon->isValid($cart['subtotal'])) {
             $message = 'Coupon is not valid.';
             if ($coupon->min_order > 0 && $cart['subtotal'] < $coupon->min_order) {
-                $message = "Minimum order of ৳{$coupon->min_order} required for this coupon.";
+                $message = "Minimum order of \${$coupon->min_order} required for this coupon.";
+            }
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $message]);
             }
             return back()->with('error', $message);
         }
 
+        $discount = $coupon->calculateDiscount($cart['subtotal']);
+        
         session(['coupon' => [
             'id' => $coupon->id,
             'code' => $coupon->code,
             'type' => $coupon->type,
             'value' => $coupon->value,
-            'discount' => $coupon->calculateDiscount($cart['subtotal']),
+            'discount' => $discount,
         ]]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'id' => $coupon->id,
+                'code' => $coupon->code,
+                'discount' => $discount,
+            ]);
+        }
 
         return back()->with('success', "Coupon '{$coupon->code}' applied!");
     }

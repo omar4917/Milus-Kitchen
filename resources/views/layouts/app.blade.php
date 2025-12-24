@@ -482,16 +482,13 @@ $(document).ready(function() {
             data: form.serialize(),
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
             success: function(response) {
-                // Show modal notification
-                showCartModal(response.item_name, response.cart);
-                
                 // Update cart badge
                 if (response.cart && response.cart.count !== undefined) {
                     $('#cartBadgeCount').text(response.cart.count);
                 }
                 
-                btn.html('✓ Added!');
-                setTimeout(function() { btn.html(originalText).prop('disabled', false); }, 1500);
+                btn.html('✓');
+                setTimeout(function() { btn.html(originalText).prop('disabled', false); }, 1000);
             },
             error: function(xhr) {
                 btn.html(originalText).prop('disabled', false);
