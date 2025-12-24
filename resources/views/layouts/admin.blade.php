@@ -52,6 +52,10 @@
                     <span class="sidebar-icon">⭐</span>
                     Reviews
                 </a>
+                <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
+                    <span class="sidebar-icon">🏷️</span>
+                    Specials
+                </a>
             </nav>
             
             <div class="sidebar-footer">

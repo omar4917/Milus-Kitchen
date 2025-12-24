@@ -27,6 +27,11 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
+            if (Auth::user()->role === \App\Models\User::ROLE_ADMIN) {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
             return redirect()->intended(route('user.dashboard'));
         }
 

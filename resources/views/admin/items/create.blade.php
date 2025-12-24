@@ -39,6 +39,19 @@
             </div>
 
             <div class="form-group">
+                <label for="discount_price">Discount/Special Price ($)</label>
+                <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" min="0" step="1">
+                <small>Optional. Must be lower than regular price to show discount.</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" name="is_special" value="1" {{ old('is_special') ? 'checked' : '' }}>
+                    Feature as Special Item (e.g. Holiday/Today's Special)
+                </label>
+            </div>
+
+            <div class="form-group">
                 <label for="photo">Photo</label>
                 <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/jpg,image/webp">
                 <small>Max 2MB. JPEG, PNG, or WebP</small>

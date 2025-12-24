@@ -173,6 +173,70 @@
     <p><img src="{{ asset('images/bg_hero.png') }}" alt="Meal Restaurant" class="img-fluid"></p>
 </div>
 
+<div class="section bg-light" id="section-menu" data-aos="fade-up">
+    <div class="container">
+        <div class="row section-heading justify-content-center mb-5">
+            <div class="col-md-8 text-center">
+                <h2 class="heading mb-3">Menu</h2>
+                <p class="sub-heading mb-5">Explore our delicious offerings</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                @php
+                    $categories = \App\Models\Category::with(['menuItems' => function($q) { $q->where('is_available', true)->take(4); }])->take(3)->get();
+                @endphp
+                
+                <ul class="nav site-tab-nav justify-content-center mb-4" id="pills-tab" role="tablist">
+                    @foreach($categories as $index => $category)
+                    <li class="nav-item">
+                        <a class="nav-link {{ $index == 0 ? 'active' : '' }}" id="pills-{{ $category->id }}-tab" data-toggle="pill" href="#pills-{{ $category->id }}" role="tab">{{ $category->name }}</a>
+                    </li>
+                    @endforeach
+                </ul>
+                
+                <div class="tab-content" id="pills-tabContent">
+                    @foreach($categories as $index => $category)
+                    <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}" id="pills-{{ $category->id }}" role="tabpanel">
+                        <div class="row">
+                            @foreach($category->menuItems as $item)
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="menu-item-card h-100" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease;">
+                                    <div style="height: 180px; overflow: hidden;">
+                                        @if($item->image)
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        @else
+                                        <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        @endif
+                                    </div>
+                                    <div style="padding: 20px;">
+                                        <h5 style="font-weight: 700; margin-bottom: 8px; color: #333;">{{ $item->name }}</h5>
+                                        <p style="color: #777; font-size: 0.85rem; margin-bottom: 15px; min-height: 40px;">{{ Str::limit($item->description, 60) }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span style="color: #ff7a5c; font-size: 1.2rem; font-weight: 700;">${{ number_format($item->price, 2) }}</span>
+                                            <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
+                                                @csrf
+                                                <input type="hidden" name="menu_item_id" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 50%; width: 35px; height: 35px; padding: 0;">+</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ route('menu') }}" class="btn btn-primary btn-outline-primary">View Full Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="section bg-white" data-aos="fade-up">
     <div class="container">
         <div class="row mb-5">
@@ -207,64 +271,6 @@
                             <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. It is a paradisematic country.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="section bg-light" id="section-menu" data-aos="fade-up">
-    <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
-            <div class="col-md-8 text-center">
-                <h2 class="heading mb-3">Menu</h2>
-                <p class="sub-heading mb-5">Explore our delicious offerings</p>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                @php
-                    $categories = \App\Models\Category::with(['menuItems' => function($q) { $q->where('is_available', true)->take(4); }])->take(3)->get();
-                @endphp
-                
-                <ul class="nav site-tab-nav" id="pills-tab" role="tablist">
-                    @foreach($categories as $index => $category)
-                    <li class="nav-item">
-                        <a class="nav-link {{ $index == 0 ? 'active' : '' }}" id="pills-{{ $category->id }}-tab" data-toggle="pill" href="#pills-{{ $category->id }}" role="tab">{{ $category->name }}</a>
-                    </li>
-                    @endforeach
-                </ul>
-                
-                <div class="tab-content" id="pills-tabContent">
-                    @foreach($categories as $index => $category)
-                    <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}" id="pills-{{ $category->id }}" role="tabpanel">
-                        @foreach($category->menuItems as $item)
-                        <div class="d-block d-md-flex menu-food-item">
-                            <div class="text order-1 mb-3">
-                                @if($item->image)
-                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
-                                @else
-                                <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}">
-                                @endif
-                                <h3><a href="#">{{ $item->name }}</a></h3>
-                                <p>{{ $item->description }}</p>
-                            </div>
-                            <div class="price order-2">
-                                <strong>${{ number_format($item->price, 2) }}</strong>
-                                <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart" style="margin-top: 10px;">
-                                    @csrf
-                                    <input type="hidden" name="menu_item_id" value="{{ $item->id }}">
-                                    <button type="submit" class="btn btn-sm btn-primary">Add</button>
-                                </form>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endforeach
-                </div>
-                
-                <div class="text-center mt-4">
-                    <a href="{{ route('menu') }}" class="btn btn-primary btn-outline-primary">View Full Menu</a>
                 </div>
             </div>
         </div>
@@ -350,57 +356,7 @@
     </div>
 </div>
 
-<div class="section bg-light" data-aos="fade-up" id="section-reservation">
-    <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
-            <div class="col-md-8 text-center">
-                <h2 class="heading mb-3">Reservation</h2>
-                <p class="sub-heading mb-5">Book a table with us</p>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-10 p-5 form-wrap">
-                <form action="{{ route('contact.submit') }}" method="POST">
-                    @csrf
-                    <div class="row mb-4">
-                        <div class="form-group col-md-4">
-                            <label for="name" class="label">Name</label>
-                            <div class="form-field-icon-wrap">
-                                <span class="icon ion-android-person"></span>
-                                <input type="text" name="name" class="form-control" id="name" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="email" class="label">Email</label>
-                            <div class="form-field-icon-wrap">
-                                <span class="icon ion-email"></span>
-                                <input type="email" name="email" class="form-control" id="email" required>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="phone" class="label">Phone</label>
-                            <div class="form-field-icon-wrap">
-                                <span class="icon ion-android-call"></span>
-                                <input type="text" name="phone" class="form-control" id="phone">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="form-group col-md-12">
-                            <label for="message" class="label">Message</label>
-                            <textarea name="message" id="message" cols="30" rows="3" class="form-control" required></textarea>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary btn-outline-primary btn-block" value="Reserve Now">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="section" data-aos="fade-up" id="section-contact">
     <div class="container">

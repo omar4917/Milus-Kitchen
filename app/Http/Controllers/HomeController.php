@@ -19,8 +19,17 @@ class HomeController extends Controller
         $categories = Category::active()
             ->ordered()
             ->withCount('activeMenuItems')
+            ->with(['activeMenuItems' => function ($query) {
+                $query->ordered()->take(6); // Limit to 6 items per category for homepage to avoid overload
+            }])
             ->get();
 
-        return view('public.home', compact('featuredItems', 'categories'));
+        $reviews = \App\Models\Review::with('user')
+            ->where('is_approved', true)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        return view('public.home', compact('featuredItems', 'categories', 'reviews'));
     }
 }

@@ -36,6 +36,18 @@
         </div>
     </div>
 
+    </div>
+
+    <!-- Analytics Charts -->
+    <div class="card mb-4" style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="card-header">
+            <h2>Weekly Revenue & Orders</h2>
+        </div>
+        <div class="card-body">
+            <canvas id="revenueChart" style="width: 100%; height: 300px;"></canvas>
+        </div>
+    </div>
+
     <!-- Quick Actions -->
     <div class="quick-actions">
         <a href="{{ route('admin.items.create') }}" class="action-btn">
@@ -101,5 +113,73 @@
             @endif
         </div>
     </div>
+    </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const weeklyStats = @json($weeklyStats);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weeklyStats.labels,
+                datasets: [
+                    {
+                        label: 'Revenue ($)',
+                        data: weeklyStats.revenues,
+                        borderColor: '#ff7a5c',
+                        backgroundColor: 'rgba(255, 122, 92, 0.1)',
+                        borderWidth: 2,
+                        yAxisID: 'y',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Orders',
+                        data: weeklyStats.orders,
+                        borderColor: '#343a40',
+                        backgroundColor: 'rgba(52, 58, 64, 0.1)',
+                        borderWidth: 2,
+                        yAxisID: 'y1',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Revenue ($)' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Orders' },
+                        grid: { drawOnChartArea: false }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush

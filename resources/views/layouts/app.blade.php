@@ -25,34 +25,131 @@
     <link rel="stylesheet" href="{{ asset('fonts/flaticon/font/flaticon.css') }}">
     <!-- Theme Style -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
     @stack('styles')
 </head>
 <body class="bg-light" data-spy="scroll" data-target="#ftco-navbar-spy" data-offset="0">
 
 <div class="site-wrap">
     
+    <style>
+        .site-menu {
+            width: 300px;
+            position: fixed;
+            right: 0;
+            z-index: 2000;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            height: 100vh;
+            overflow-y: auto;
+            background: #fff;
+            box-shadow: -10px 0 30px -10px rgba(0,0,0,0.1);
+            transition: 0.3s all ease;
+            transform: translateX(100%);
+        }
+        .site-menu.active { transform: translateX(0); }
+        .site-menu .site-menu-header {
+            padding: 0 40px 30px 40px;
+            border-bottom: 1px solid #f2f2f2;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .site-menu .brand-logo {
+            font-size: 30px;
+            font-weight: 900;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: -1px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .site-menu .brand-logo .dot { color: #ff7a5c; }
+        
+        .site-menu ul { padding: 0 40px; margin: 0; }
+        .site-menu ul li { display: block; margin-bottom: 15px; }
+        .site-menu ul li a {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #555;
+            text-decoration: none;
+            transition: 0.3s all ease;
+            padding: 10px 0;
+            font-weight: 500;
+        }
+        .site-menu ul li a .icon {
+            font-size: 20px;
+            margin-right: 15px;
+            color: #ccc;
+            transition: 0.3s all ease;
+            width: 25px;
+            text-align: center;
+        }
+        .site-menu ul li a:hover, .site-menu ul li.active a { color: #ff7a5c; }
+        .site-menu ul li a:hover .icon, .site-menu ul li.active a .icon { color: #ff7a5c; }
+        
+        .site-menu .divider { height: 1px; background: #eee; margin: 20px 0; }
+        
+        .site-menu .menu-social { margin-top: 30px; padding-top: 30px; border-top: 1px solid #f2f2f2; display: flex; justify-content: center; gap: 15px; }
+        .site-menu .menu-social a {
+            width: 40px; height: 40px; border-radius: 50%; background: #f8f9fa; color: #333;
+            display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;
+        }
+        .site-menu .menu-social a:hover { background: #ff7a5c; color: white; }
+    </style>
+
     <nav class="site-menu" id="ftco-navbar-spy">
         <div class="site-menu-inner" id="ftco-navbar">
+            <div class="site-menu-header">
+                <a href="{{ route('home') }}" class="brand-logo">Meal<span class="dot">.</span></a>
+            </div>
             <ul class="list-unstyled">
-                <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('about') }}">About Us</a></li>
-                <li><a href="{{ route('menu') }}">Our Menu</a></li>
-                <li><a href="{{ route('cart') }}">Cart ({{ app(\App\Services\CartService::class)->getCount() }})</a></li>
-                <li><a href="{{ route('contact') }}">Contact</a></li>
-                <li class="divider" style="border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;"></li>
+                <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                    <a href="{{ route('home') }}"><span class="icon ion-android-home"></span>Home</a>
+                </li>
+                <li class="{{ request()->routeIs('about') ? 'active' : '' }}">
+                    <a href="{{ route('about') }}"><span class="icon ion-ios-information-outline"></span>About Us</a>
+                </li>
+                <li class="{{ request()->routeIs('menu') ? 'active' : '' }}">
+                    <a href="{{ route('menu') }}"><span class="icon ion-android-restaurant"></span>Our Menu</a>
+                </li>
+                <li class="{{ request()->routeIs('cart') ? 'active' : '' }}">
+                    <a href="{{ route('cart') }}">
+                        <span class="icon ion-android-cart"></span>Cart 
+                        <span class="badge badge-primary ml-auto" style="background:#ff7a5c;">{{ app(\App\Services\CartService::class)->getCount() }}</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
+                    <a href="{{ route('contact') }}"><span class="icon ion-android-mail"></span>Contact</a>
+                </li>
+                
+                <li class="divider"></li>
+                
                 @auth
-                    <li><a href="{{ route('user.dashboard') }}">My Account</a></li>
+                    @if(auth()->user()->isAdmin() || auth()->user()->isStaff())
+                        <li><a href="{{ route('admin.dashboard') }}"><span class="icon ion-android-options"></span>Admin Panel</a></li>
+                    @else
+                        <li><a href="{{ route('user.dashboard') }}"><span class="icon ion-android-person"></span>My Account</a></li>
+                    @endif
                     <li>
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        <form action="{{ route('logout') }}" method="POST" class="d-flex w-100">
                             @csrf
-                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer; font: inherit; padding: 0;">Logout</button>
+                            <button type="submit" style="background: none; border: none; padding: 0; display: flex; align-items: center; color: #555; width: 100%; cursor: pointer; font-weight: 500;">
+                                <span class="icon ion-log-out" style="font-size: 20px; margin-right: 15px; color: #ccc; width: 25px; text-align: center;"></span>
+                                Logout
+                            </button>
                         </form>
                     </li>
                 @else
-                    <li><a href="{{ route('login') }}">Login</a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
+                    <li><a href="{{ route('login') }}"><span class="icon ion-log-in"></span>Login</a></li>
+                    <li><a href="{{ route('register') }}"><span class="icon ion-person-add"></span>Register</a></li>
                 @endauth
             </ul>
+
+            <div class="menu-social">
+                <a href="#"><span class="fa fa-facebook"></span></a>
+                <a href="#"><span class="fa fa-twitter"></span></a>
+                <a href="#"><span class="fa fa-instagram"></span></a>
+            </div>
         </div>
     </nav>
 
@@ -148,6 +245,25 @@
 
     <div class="main-wrap">
         @yield('content')
+    </div>
+
+    <div class="section-newsletter" style="padding: 60px 0; background: #ff7a5c; color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h2 class="heading mb-2" style="color: white; font-weight: bold;">Subscribe to our Newsletter</h2>
+                    <p class="mb-0" style="color: rgba(255,255,255,0.9);">Get the latest updates, special offers, and culinary tips.</p>
+                </div>
+                <div class="col-md-6">
+                    <form action="#" class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully! (Demo)');">
+                        <div class="d-flex position-relative">
+                            <input type="email" class="form-control" placeholder="Enter your email" style="height: 50px; border-radius: 30px; border: none; padding-right: 120px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                            <button type="submit" class="btn" style="position: absolute; right: 5px; top: 5px; height: 40px; border-radius: 25px; background: #333; color: white; border: none; padding: 0 25px; font-weight: 600;">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="ftco-footer">
@@ -424,6 +540,7 @@ $(document).ready(function() {
 </script>
 
 @stack('scripts')
+@include('public.partials.item_modal')
 </body>
 </html>
 

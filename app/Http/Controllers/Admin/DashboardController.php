@@ -18,12 +18,13 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = $this->orderService->getTodayStats();
+        $weeklyStats = $this->orderService->getWeeklyStats();
         
         $recentOrders = Order::with('items')
             ->latest()
             ->take(10)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentOrders'));
+        return view('admin.dashboard', compact('stats', 'recentOrders', 'weeklyStats'));
     }
 }

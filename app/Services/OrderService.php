@@ -123,12 +123,35 @@ class OrderService
         return [
             'total_orders' => $ordersQuery->count(),
             'total_revenue' => $ordersQuery->where('status', '!=', Order::STATUS_CANCELLED)->sum('total'),
-            'pending_orders' => Order::whereDate('created_at', $today)
-                ->whereIn('status', [Order::STATUS_NEW, Order::STATUS_CONFIRMED, Order::STATUS_COOKING])
-                ->count(),
+            'pending_orders' => Order::whereIn('status', [Order::STATUS_NEW, Order::STATUS_CONFIRMED, Order::STATUS_COOKING])->count(), // Global pending, not just today
             'completed_orders' => Order::whereDate('created_at', $today)
                 ->where('status', Order::STATUS_COMPLETED)
                 ->count(),
+        ];
+    }
+
+    public function getWeeklyStats(): array
+    {
+        $dates = collect();
+        $revenues = collect();
+        $orders = collect();
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = today()->subDays($i);
+            $formattedDate = $date->format('M d');
+            
+            $dayOrders = Order::whereDate('created_at', $date)
+                ->where('status', '!=', Order::STATUS_CANCELLED);
+                
+            $dates->push($formattedDate);
+            $revenues->push($dayOrders->sum('total'));
+            $orders->push($dayOrders->count());
+        }
+
+        return [
+            'labels' => $dates,
+            'revenues' => $revenues,
+            'orders' => $orders,
         ];
     }
 }

@@ -36,6 +36,18 @@
             </div>
 
             <div class="form-group">
+                <label for="discount_price">Discount/Special Price ($)</label>
+                <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price', $item->discount_price) }}" min="0" step="1">
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" name="is_special" value="1" {{ old('is_special', $item->is_special) ? 'checked' : '' }}>
+                    Feature as Special Item
+                </label>
+            </div>
+
+            <div class="form-group">
                 <label for="photo">Photo</label>
                 @if($item->photo_path)
                 <div class="current-photo">

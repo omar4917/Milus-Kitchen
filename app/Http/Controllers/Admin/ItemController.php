@@ -41,12 +41,15 @@ class ItemController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0|lt:price',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'sort_order' => 'nullable|integer|min:0',
             'is_available' => 'boolean',
+            'is_special' => 'boolean',
         ]);
 
         $validated['is_available'] = $request->boolean('is_available', true);
+        $validated['is_special'] = $request->boolean('is_special');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
 
         if ($request->hasFile('photo')) {
@@ -73,12 +76,15 @@ class ItemController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0|lt:price',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'sort_order' => 'nullable|integer|min:0',
             'is_available' => 'boolean',
+            'is_special' => 'boolean',
         ]);
 
         $validated['is_available'] = $request->boolean('is_available', true);
+        $validated['is_special'] = $request->boolean('is_special');
 
         if ($request->hasFile('photo')) {
             // Delete old photo

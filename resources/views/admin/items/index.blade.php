@@ -37,6 +37,7 @@
                         <th>Name</th>
                         <th>Category</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -54,6 +55,14 @@
                         <td><strong>{{ $item->name }}</strong></td>
                         <td>{{ $item->category->name }}</td>
                         <td>${{ number_format($item->price, 0) }}</td>
+                        <td>
+                            @if($item->discount_price)
+                                <span class="text-danger font-weight-bold">${{ number_format($item->discount_price, 0) }}</span>
+                                <br><small class="text-muted"><del>${{ number_format($item->price, 0) }}</del></small>
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td>
                             <form action="{{ route('admin.items.toggle', $item) }}" method="POST" style="display:inline">
                                 @csrf

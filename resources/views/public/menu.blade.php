@@ -27,56 +27,80 @@
         <!-- Category Filter -->
         <div class="row justify-content-center mb-4">
             <div class="col-md-8 text-center">
-                <a href="{{ route('menu') }}" class="btn {{ !request('category') ? 'btn-primary' : 'btn-outline-primary' }} m-1">All</a>
+                <a href="{{ route('menu') }}" class="btn {{ !request('category') ? 'btn-primary' : 'btn-outline-primary' }} m-1 category-filter-btn">All</a>
                 @foreach(\App\Models\Category::all() as $category)
                     <a href="{{ route('menu', ['category' => $category->id]) }}" 
-                       class="btn {{ request('category') == $category->id ? 'btn-primary' : 'btn-outline-primary' }} m-1">
+                       class="btn {{ request('category') == $category->id ? 'btn-primary' : 'btn-outline-primary' }} m-1 category-filter-btn">
                         {{ $category->name }}
                     </a>
                 @endforeach
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                @php
-                    $query = \App\Models\MenuItem::with('category')->where('is_available', true);
-                    if(request('category')) {
-                        $query->where('category_id', request('category'));
-                    }
-                    $menuItems = $query->get();
-                @endphp
-                
-                @forelse($menuItems as $item)
-                <div class="d-block d-md-flex menu-food-item" style="background: white; margin-bottom: 15px; padding: 20px; border-radius: 10px;">
-                    <div class="text order-1 mb-3">
-                        @if($item->image)
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
-                        @else
-                        <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}">
-                        @endif
-                        <h3><a href="#">{{ $item->name }}</a></h3>
-                        <p>{{ $item->description }}</p>
-                        @if($item->category)
-                        <span class="badge badge-secondary">{{ $item->category->name }}</span>
-                        @endif
-                    </div>
-                    <div class="price order-2">
-                        <strong style="font-size: 20px;">${{ number_format($item->price, 2) }}</strong>
-                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart" style="margin-top: 15px;">
-                            @csrf
-                            <input type="hidden" name="menu_item_id" value="{{ $item->id }}">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                        </form>
-                    </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="row" id="menu-grid">
+                    @include('public.partials.menu_items')
                 </div>
-                @empty
-                <div class="text-center">
-                    <p>No menu items available at the moment.</p>
-                </div>
-                @endforelse
             </div>
         </div>
     </div>
 </div>
+
 @endsection
+
+@push('styles')
+<style>
+    #menu-grid {
+        transition: opacity 0.08s ease-out, transform 0.08s ease-out;
+    }
+    #menu-grid.loading {
+        opacity: 0.3;
+        transform: scale(0.98);
+    }
+    #menu-grid.fade-in {
+        animation: fadeInUp 0.4s ease-out;
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .category-filter-btn {
+        transition: all 0.2s ease;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('.category-filter-btn').on('click', function(e) {
+            e.preventDefault();
+            
+            $('.category-filter-btn').removeClass('btn-primary').addClass('btn-outline-primary');
+            $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            
+            var url = $(this).attr('href');
+            
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    $('#menu-grid').html(response);
+                    if(typeof AOS !== 'undefined') AOS.refresh();
+                }
+            });
+        });
+    });
+</script>
+@endpush
+
+
+
+

@@ -7,7 +7,7 @@ use App\Models\MenuItem;
 
 class MenuController extends Controller
 {
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
         $categories = Category::active()
             ->ordered()
@@ -16,7 +16,19 @@ class MenuController extends Controller
             }])
             ->get();
 
-        return view('public.menu', compact('categories'));
+        $query = MenuItem::with('category')->where('is_available', true);
+
+        if ($request->has('category') && $request->category) {
+            $query->where('category_id', $request->category);
+        }
+
+        $menuItems = $query->get();
+
+        if ($request->ajax()) {
+            return view('public.partials.menu_items', compact('menuItems'))->render();
+        }
+
+        return view('public.menu', compact('categories', 'menuItems'));
     }
 
     public function category(string $slug)
