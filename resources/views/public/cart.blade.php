@@ -345,7 +345,7 @@
                         <span>${{ number_format($cart['subtotal'], 0) }}</span>
                     </div>
                     <a href="{{ route('checkout') }}" class="checkout-btn">Proceed to Checkout</a>
-                    <a href="{{ route('menu') }}" class="continue-btn">← Continue Shopping</a>
+                    <a href="{{ route('menu') }}" class="continue-btn">← Continue Ordering</a>
                 </div>
             </div>
         @else

@@ -312,11 +312,71 @@
 <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#ff7a5c"/></svg></div>
 
 <!-- Floating Cart Button -->
-<a href="{{ route('cart') }}" class="floating-cart-btn">
+<button type="button" class="floating-cart-btn" id="openCartSidebar">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
     <span class="cart-badge" id="cartBadgeCount">{{ app(\App\Services\CartService::class)->getCount() }}</span>
     <span class="cart-label">CART</span>
-</a>
+</button>
+
+<!-- Cart Sidebar Overlay -->
+<div class="cart-sidebar-overlay" id="cartSidebarOverlay"></div>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar-header">
+        <h3><span class="icon ion-android-cart"></span> Your Cart</h3>
+        <button class="cart-sidebar-close" id="closeCartSidebar">&times;</button>
+    </div>
+    
+    <div class="cart-sidebar-content">
+        @php $cart = app(\App\Services\CartService::class)->getCartDetails(); @endphp
+        
+        @if(count($cart['items']) > 0)
+            <div class="cart-sidebar-items">
+                @foreach($cart['items'] as $item)
+                    <div class="cart-sidebar-item">
+                        <div class="item-image">
+                            @php $itemImage = $item['image'] ?? $item['photo_path'] ?? null; @endphp
+                            @if($itemImage)
+                                <img src="{{ asset('storage/' . $itemImage) }}" alt="{{ $item['name'] }}">
+                            @else
+                                <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item['name'] }}">
+                            @endif
+                        </div>
+                        <div class="item-details">
+                            <h4>{{ $item['name'] }}</h4>
+                            <p class="item-price">${{ number_format($item['price'], 0) }} × {{ $item['quantity'] }}</p>
+                        </div>
+                        <div class="item-total">${{ number_format($item['price'] * $item['quantity'], 0) }}</div>
+                    </div>
+                @endforeach
+            </div>
+            
+            <div class="cart-sidebar-summary">
+                <div class="summary-row">
+                    <span>Subtotal ({{ $cart['count'] }} items)</span>
+                    <strong>${{ number_format($cart['subtotal'], 0) }}</strong>
+                </div>
+                <div class="summary-row delivery">
+                    <span>Delivery Fee</span>
+                    <span class="text-muted">Calculated at checkout</span>
+                </div>
+            </div>
+            
+            <div class="cart-sidebar-actions">
+                <a href="{{ route('cart') }}" class="btn-sidebar btn-view-full-cart">View Full Cart</a>
+                <a href="{{ route('checkout') }}" class="btn-sidebar btn-sidebar-checkout">Proceed to Checkout</a>
+            </div>
+        @else
+            <div class="cart-sidebar-empty">
+                <div class="empty-icon">🛒</div>
+                <h4>Your cart is empty</h4>
+                <p>Add some delicious items to get started!</p>
+                <a href="{{ route('menu') }}" class="btn-sidebar btn-browse-menu">Browse Menu</a>
+            </div>
+        @endif
+    </div>
+</div>
 
 <style>
 .floating-cart-btn {
@@ -336,6 +396,7 @@
     box-shadow: 0 8px 30px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
     text-decoration: none;
+    border: none;
 }
 .floating-cart-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); color: white; text-decoration: none; }
 .cart-badge {
@@ -449,6 +510,203 @@
 .btn-checkout:hover { border-color: #ff7a5c; color: #ff7a5c; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Cart Sidebar Styles */
+.cart-sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.cart-sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    max-width: 100%;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+}
+.cart-sidebar.active {
+    transform: translateX(0);
+}
+.cart-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+}
+.cart-sidebar-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.cart-sidebar-header .icon { font-size: 22px; }
+.cart-sidebar-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.cart-sidebar-close:hover { background: rgba(255,255,255,0.25); }
+.cart-sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.cart-sidebar-items {
+    flex: 1;
+}
+.cart-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+.cart-sidebar-item:hover { background: #f0f0f0; }
+.cart-sidebar-item .item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.cart-sidebar-item .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cart-sidebar-item .item-image .no-image {
+    width: 100%;
+    height: 100%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+.cart-sidebar-item .item-details {
+    flex: 1;
+    min-width: 0;
+}
+.cart-sidebar-item .item-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.cart-sidebar-item .item-price {
+    margin: 0;
+    font-size: 13px;
+    color: #888;
+}
+.cart-sidebar-item .item-total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ff7a5c;
+    white-space: nowrap;
+}
+.cart-sidebar-summary {
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+.cart-sidebar-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.cart-sidebar-summary .summary-row span { color: #666; font-size: 14px; }
+.cart-sidebar-summary .summary-row strong { color: #ff7a5c; font-size: 18px; }
+.cart-sidebar-summary .delivery span { font-size: 13px; }
+.cart-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn-sidebar {
+    display: block;
+    padding: 14px 20px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+.btn-view-full-cart {
+    background: white;
+    color: #333;
+    border: 2px solid #ddd;
+}
+.btn-view-full-cart:hover { border-color: #ff7a5c; color: #ff7a5c; text-decoration: none; }
+.btn-sidebar-checkout {
+    background: linear-gradient(135deg, #ff7a5c 0%, #ff6b4a 100%);
+    color: white;
+}
+.btn-sidebar-checkout:hover { background: linear-gradient(135deg, #ff6b4a 0%, #e55a3c 100%); color: white; text-decoration: none; }
+.btn-browse-menu {
+    background: linear-gradient(135deg, #ff7a5c 0%, #ff6b4a 100%);
+    color: white;
+}
+.btn-browse-menu:hover { background: linear-gradient(135deg, #ff6b4a 0%, #e55a3c 100%); color: white; text-decoration: none; }
+.cart-sidebar-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+.cart-sidebar-empty .empty-icon { font-size: 64px; margin-bottom: 20px; opacity: 0.5; }
+.cart-sidebar-empty h4 { margin: 0 0 10px 0; color: #333; font-weight: 600; }
+.cart-sidebar-empty p { margin: 0 0 25px 0; color: #888; font-size: 14px; }
+@media (max-width: 480px) {
+    .cart-sidebar { width: 100%; }
+}
 </style>
 
 <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
@@ -467,6 +725,28 @@
 <!-- AJAX Add to Cart -->
 <script>
 $(document).ready(function() {
+    // Cart Sidebar Controls
+    $('#openCartSidebar').on('click', function() {
+        $('#cartSidebar').addClass('active');
+        $('#cartSidebarOverlay').addClass('active');
+        $('body').css('overflow', 'hidden');
+    });
+    
+    $('#closeCartSidebar, #cartSidebarOverlay').on('click', function() {
+        $('#cartSidebar').removeClass('active');
+        $('#cartSidebarOverlay').removeClass('active');
+        $('body').css('overflow', '');
+    });
+    
+    // Close sidebar on Escape key
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && $('#cartSidebar').hasClass('active')) {
+            $('#cartSidebar').removeClass('active');
+            $('#cartSidebarOverlay').removeClass('active');
+            $('body').css('overflow', '');
+        }
+    });
+
     // Handle all add-to-cart forms via AJAX
     $(document).on('submit', 'form[action*="cart/add"]', function(e) {
         e.preventDefault();
