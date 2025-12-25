@@ -109,6 +109,22 @@ class UserController extends Controller
         return view('user.order-detail', compact('order'));
     }
 
+    public function reorder(Order $order, \App\Services\CartService $cartService)
+    {
+        $user = Auth::user();
+
+        // Verify order belongs to user
+        if ($order->customer_email !== $user->email) {
+            abort(403);
+        }
+
+        foreach ($order->items as $item) {
+            $cartService->add($item->menu_item_id, $item->quantity);
+        }
+
+        return redirect()->route('cart')->with('success', 'Items from order #' . $order->order_number . ' have been added to your cart.');
+    }
+
     public function profile()
     {
         $user = Auth::user();
@@ -122,11 +138,15 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'notification_prefs' => 'nullable|array',
             'password' => 'nullable|string|min:4|confirmed',
         ]);
 
         $user->name = $validated['name'];
         $user->phone = $validated['phone'];
+        $user->address = $validated['address'] ?? null;
+        $user->notification_prefs = $validated['notification_prefs'] ?? [];
         
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
@@ -135,5 +155,16 @@ class UserController extends Controller
         $user->save();
 
         return back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function notifications()
+    {
+        $user = Auth::user();
+        $notifications = $user->notifications()->paginate(15);
+        
+        // Mark as read
+        $user->unreadNotifications->markAsRead();
+
+        return view('user.notifications', compact('notifications'));
     }
 }

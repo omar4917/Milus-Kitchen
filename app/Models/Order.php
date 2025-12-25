@@ -10,6 +10,7 @@ class Order extends Model
 {
     protected $fillable = [
         'order_number',
+        'user_id',
         'customer_name',
         'customer_phone',
         'customer_email',
@@ -76,6 +77,11 @@ class Order extends Model
         $date = now()->format('ymd');
         $random = strtoupper(Str::random(4));
         return "{$prefix}{$date}{$random}";
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function items(): HasMany

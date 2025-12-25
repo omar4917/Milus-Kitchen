@@ -18,6 +18,7 @@ class MenuItem extends Model
         'is_special',
         'discount_price',
         'sort_order',
+        'stock_quantity',
     ];
 
     protected $casts = [
@@ -25,7 +26,10 @@ class MenuItem extends Model
         'discount_price' => 'decimal:2',
         'is_available' => 'boolean',
         'is_special' => 'boolean',
+        'stock_quantity' => 'integer',
     ];
+
+    protected $appends = ['photo_url', 'discount_percentage'];
 
     public function category(): BelongsTo
     {
@@ -53,5 +57,15 @@ class MenuItem extends Model
             return asset('storage/' . $this->photo_path);
         }
         return null;
+    }
+
+    public function getDiscountPercentageAttribute(): int
+    {
+        if (!$this->discount_price || $this->price <= 0) {
+            return 0;
+        }
+        
+        $savings = $this->price - $this->discount_price;
+        return (int) round(($savings / $this->price) * 100);
     }
 }

@@ -29,6 +29,7 @@ class User extends Authenticatable
         'address',
         'preferred_payment_method',
         'preferred_delivery_type',
+        'notification_prefs',
     ];
 
     public function isAdmin(): bool
@@ -61,6 +62,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'notification_prefs' => 'array',
         ];
+    }
+
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 }

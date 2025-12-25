@@ -38,7 +38,7 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
-Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('cart.coupon');
+Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('cart.coupon.apply');
 Route::post('/cart/coupon/remove', [CartController::class, 'removeCoupon'])->name('cart.coupon.remove');
 
 // Checkout
@@ -68,8 +68,10 @@ Route::middleware('auth')->prefix('dashboard')->name('user.')->group(function ()
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/orders', [UserController::class, 'orders'])->name('orders');
     Route::get('/orders/{order}', [UserController::class, 'orderDetail'])->name('orders.show');
+    Route::post('/orders/{order}/reorder', [UserController::class, 'reorder'])->name('orders.reorder');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
 });
 
 /*
@@ -98,6 +100,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Orders
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/check-new', [AdminOrderController::class, 'checkNew'])->name('orders.check');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
         Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])
             ->name('orders.status');
@@ -113,5 +116,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settings
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+        // Users
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['create', 'store']);
     });
 });

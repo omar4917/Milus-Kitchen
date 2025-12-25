@@ -19,6 +19,9 @@ class CartController extends Controller
     {
         $cart = $this->cartService->getCartDetails();
         $appliedCoupon = session('coupon');
+        $cart['coupon'] = $appliedCoupon;
+        $cart['discount'] = $appliedCoupon['discount'] ?? 0;
+        $cart['total'] = max(0, $cart['subtotal'] - $cart['discount']);
         return view('public.cart', compact('cart', 'appliedCoupon'));
     }
 
@@ -37,12 +40,18 @@ class CartController extends Controller
         // Get item name for modal
         $item = \App\Models\MenuItem::find($validated['menu_item_id']);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->ajax()) {
+            $cart = $this->cartService->getCartDetails();
+            $appliedCoupon = session('coupon');
+            $cart['coupon'] = $appliedCoupon;
+            $cart['discount'] = $appliedCoupon['discount'] ?? 0;
+            $cart['total'] = max(0, $cart['subtotal'] - $cart['discount']);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Item added to cart',
                 'item_name' => $item->name,
-                'cart' => $this->cartService->getCartDetails(),
+                'cart' => $cart,
             ]);
         }
 
@@ -61,10 +70,19 @@ class CartController extends Controller
             $validated['quantity']
         );
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->ajax()) {
+            $cart = $this->cartService->getCartDetails();
+            $appliedCoupon = session('coupon');
+            $cart['coupon'] = $appliedCoupon;
+            $cart['discount'] = $appliedCoupon['discount'] ?? 0;
+            $cart['total'] = max(0, $cart['subtotal'] - $cart['discount']);
+            
             return response()->json([
                 'success' => true,
-                'cart' => $this->cartService->getCartDetails(),
+                'count' => $cart['count'],
+                'subtotal' => $cart['subtotal'],
+                'total' => $cart['total'],
+                'cart' => $cart,
             ]);
         }
 
@@ -79,10 +97,19 @@ class CartController extends Controller
 
         $this->cartService->remove($validated['menu_item_id']);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->ajax()) {
+            $cart = $this->cartService->getCartDetails();
+            $appliedCoupon = session('coupon');
+            $cart['coupon'] = $appliedCoupon;
+            $cart['discount'] = $appliedCoupon['discount'] ?? 0;
+            $cart['total'] = max(0, $cart['subtotal'] - $cart['discount']);
+            
             return response()->json([
                 'success' => true,
-                'cart' => $this->cartService->getCartDetails(),
+                'count' => $cart['count'],
+                'subtotal' => $cart['subtotal'],
+                'total' => $cart['total'],
+                'cart' => $cart,
             ]);
         }
 
@@ -105,7 +132,7 @@ class CartController extends Controller
         $coupon = Coupon::where('code', strtoupper($validated['coupon_code']))->first();
 
         if (!$coupon) {
-            if ($request->expectsJson()) {
+            if ($request->expectsJson() || $request->ajax()) {
                 return response()->json(['success' => false, 'message' => 'Coupon not found.']);
             }
             return back()->with('error', 'Coupon not found.');
@@ -118,7 +145,7 @@ class CartController extends Controller
             if ($coupon->min_order > 0 && $cart['subtotal'] < $coupon->min_order) {
                 $message = "Minimum order of \${$coupon->min_order} required for this coupon.";
             }
-            if ($request->expectsJson()) {
+            if ($request->expectsJson() || $request->ajax()) {
                 return response()->json(['success' => false, 'message' => $message]);
             }
             return back()->with('error', $message);
@@ -134,11 +161,13 @@ class CartController extends Controller
             'discount' => $discount,
         ]]);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,
                 'id' => $coupon->id,
                 'code' => $coupon->code,
+                'type' => $coupon->type,
+                'value' => (float)$coupon->value,
                 'discount' => $discount,
             ]);
         }
@@ -146,10 +175,17 @@ class CartController extends Controller
         return back()->with('success', "Coupon '{$coupon->code}' applied!");
     }
 
-    public function removeCoupon()
+    public function removeCoupon(Request $request)
     {
         session()->forget('coupon');
+        
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Coupon removed.'
+            ]);
+        }
+
         return back()->with('success', 'Coupon removed.');
     }
 }
-

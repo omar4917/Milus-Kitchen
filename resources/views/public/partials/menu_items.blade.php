@@ -11,11 +11,11 @@
             <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
             @endif
             
-            @if($item->discount_price && $item->discount_price < $item->price)
+            @if($item->discount_percentage > 0)
                 <!-- Discount Badge -->
                 <div style="position: absolute; top: 15px; left: 15px; background: #ea005e; color: white; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(234, 0, 94, 0.3);">
                     <span class="icon ion-pricetag" style="margin-right: 5px; font-size: 14px;"></span> 
-                    {{ round((($item->price - $item->discount_price) / $item->price) * 100) }}% off
+                    {{ $item->discount_percentage }}% off
                 </div>
             @elseif($item->category)
                 <span class="badge badge-primary" style="position: absolute; top: 15px; left: 15px; padding: 5px 10px; border-radius: 5px;">{{ $item->category->name }}</span>

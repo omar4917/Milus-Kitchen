@@ -6,32 +6,39 @@
 <div class="dashboard">
     <!-- Stats Cards -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon orders">📦</div>
+        <div class="stat-card purple">
+            <div class="stat-icon">📦</div>
             <div class="stat-content">
                 <span class="stat-value">{{ $stats['total_orders'] }}</span>
                 <span class="stat-label">Today's Orders</span>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon revenue">💰</div>
+        <div class="stat-card rose">
+            <div class="stat-icon">💰</div>
             <div class="stat-content">
                 <span class="stat-value">${{ number_format($stats['total_revenue'], 0) }}</span>
                 <span class="stat-label">Today's Revenue</span>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon pending">⏳</div>
+        <div class="stat-card sky">
+            <div class="stat-icon">⏳</div>
             <div class="stat-content">
                 <span class="stat-value">{{ $stats['pending_orders'] }}</span>
                 <span class="stat-label">Pending Orders</span>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon completed">✓</div>
+        <div class="stat-card orange">
+            <div class="stat-icon">✓</div>
             <div class="stat-content">
                 <span class="stat-value">{{ $stats['completed_orders'] }}</span>
                 <span class="stat-label">Completed Today</span>
+            </div>
+        </div>
+        <div class="stat-card emerald" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+                <span class="stat-value">${{ number_format($stats['avg_order_value'], 0) }}</span>
+                <span class="stat-label">Avg Order Value</span>
             </div>
         </div>
     </div>
@@ -39,12 +46,26 @@
     </div>
 
     <!-- Analytics Charts -->
-    <div class="card mb-4" style="margin-top: 30px; margin-bottom: 30px;">
-        <div class="card-header">
-            <h2>Weekly Revenue & Orders</h2>
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>Weekly Revenue & Orders</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" style="width: 100%; height: 300px;"></canvas>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <canvas id="revenueChart" style="width: 100%; height: 300px;"></canvas>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>Top Selling Items</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="topItemsChart" style="width: 100%; height: 300px;"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -63,6 +84,39 @@
             Manage Categories
         </a>
     </div>
+
+    @if($lowStockItems->count() > 0)
+    <div class="card mb-4 border-danger">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0 text-white" style="font-size: 1.1rem;">⚠️ Low Stock Alerts</h2>
+            <span class="badge badge-light text-danger">{{ $lowStockItems->count() }} Items</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="pl-4">Item Name</th>
+                            <th>Current Stock</th>
+                            <th class="text-right pr-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($lowStockItems as $item)
+                        <tr>
+                            <td class="pl-4"><strong>{{ $item->name }}</strong></td>
+                            <td><span class="text-danger font-weight-bold">{{ $item->stock_quantity }} remaining</span></td>
+                            <td class="text-right pr-4">
+                                <a href="{{ route('admin.items.edit', $item) }}" class="btn btn-sm btn-outline-danger">Restock</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Recent Orders -->
     <div class="card">
@@ -178,6 +232,44 @@
                         grid: { drawOnChartArea: false }
                     }
                 }
+            }
+            }
+        });
+
+        // Top Items Chart
+        const topItemsCtx = document.getElementById('topItemsChart').getContext('2d');
+        const topItemsData = @json($topItems);
+        
+        new Chart(topItemsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: topItemsData.map(item => item.item_name),
+                datasets: [{
+                    data: topItemsData.map(item => item.total_qty),
+                    backgroundColor: [
+                        '#ff7a5c',
+                        '#6366f1',
+                        '#10b981',
+                        '#f59e0b',
+                        '#ec4899'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 11 }
+                        }
+                    }
+                },
+                cutout: '70%'
             }
         });
     });

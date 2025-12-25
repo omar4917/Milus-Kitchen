@@ -13,13 +13,13 @@
             
             <div class="form-group">
                 <label for="specials_title">Section Title *</label>
-                <input type="text" id="specials_title" name="specials_title" class="form-control" value="{{ \App\Models\Setting::get('specials_title', 'Holiday Specials') }}" required>
+                <input type="text" id="specials_title" name="specials_title" class="form-control" value="{{ \App\Models\Setting::get('specials_title', "Today's Specials") }}" required>
                 <small class="form-text text-muted">e.g., "Holiday Specials", "Eid Specials", "Today's Specials"</small>
             </div>
 
             <div class="form-group">
                 <label for="specials_subtitle">Section Subtitle</label>
-                <input type="text" id="specials_subtitle" name="specials_subtitle" class="form-control" value="{{ \App\Models\Setting::get('specials_subtitle', 'Celebrate the season with our exclusive festive dishes') }}">
+                <input type="text" id="specials_subtitle" name="specials_subtitle" class="form-control" value="{{ \App\Models\Setting::get('specials_subtitle', 'Limited time offers on our most popular dishes') }}">
             </div>
 
             <div class="form-actions mt-4">

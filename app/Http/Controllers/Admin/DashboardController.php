@@ -25,6 +25,12 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentOrders', 'weeklyStats'));
+        $lowStockItems = \App\Models\MenuItem::where('stock_quantity', '<', 10)
+            ->ordered()
+            ->get();
+
+        $topItems = $this->orderService->getTopSellingItems(5);
+
+        return view('admin.dashboard', compact('stats', 'recentOrders', 'weeklyStats', 'lowStockItems', 'topItems'));
     }
 }

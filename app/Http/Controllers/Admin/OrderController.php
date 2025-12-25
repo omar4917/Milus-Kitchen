@@ -72,4 +72,10 @@ class OrderController extends Controller
         return redirect()->back()
             ->with('success', 'Order status updated successfully.');
     }
+
+    public function checkNew()
+    {
+        $count = Order::where('status', Order::STATUS_NEW)->count();
+        return response()->json(['count' => $count]);
+    }
 }

@@ -38,10 +38,17 @@
                 @error('price')<span class="error-text">{{ $message }}</span>@enderror
             </div>
 
-            <div class="form-group">
-                <label for="discount_price">Discount/Special Price ($)</label>
-                <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" min="0" step="1">
-                <small>Optional. Must be lower than regular price to show discount.</small>
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="discount_price">Discount/Special Price ($)</label>
+                    <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" min="0" step="1">
+                    <small>Optional. Fixed discount price.</small>
+                </div>
+                <div class="form-group">
+                    <label for="discount_percentage">Discount Percentage (%)</label>
+                    <input type="number" id="discount_percentage" min="0" max="100" step="1">
+                    <small>Percentage based discount.</small>
+                </div>
             </div>
 
             <div class="form-group checkbox-group">
@@ -78,3 +85,44 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const priceInput = document.getElementById('price');
+    const discountPriceInput = document.getElementById('discount_price');
+    const discountPercentageInput = document.getElementById('discount_percentage');
+
+    function updateFromPercentage() {
+        const price = parseFloat(priceInput.value) || 0;
+        const percentage = parseFloat(discountPercentageInput.value) || 0;
+        
+        if (price > 0 && percentage > 0) {
+            const discount = price * (percentage / 100);
+            discountPriceInput.value = Math.round(price - discount);
+        } else if (percentage === 0) {
+            discountPriceInput.value = '';
+        }
+    }
+
+    function updateFromPrice() {
+        const price = parseFloat(priceInput.value) || 0;
+        const discountPrice = parseFloat(discountPriceInput.value) || 0;
+        
+        if (price > 0 && discountPrice > 0 && discountPrice < price) {
+            const savings = price - discountPrice;
+            discountPercentageInput.value = Math.round((savings / price) * 100);
+        } else {
+            discountPercentageInput.value = '';
+        }
+    }
+
+    discountPercentageInput.addEventListener('input', updateFromPercentage);
+    discountPriceInput.addEventListener('input', updateFromPrice);
+    priceInput.addEventListener('input', function() {
+        if (discountPercentageInput.value) updateFromPercentage();
+        else if (discountPriceInput.value) updateFromPrice();
+    });
+});
+</script>
+@endpush

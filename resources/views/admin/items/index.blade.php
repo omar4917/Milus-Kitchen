@@ -37,7 +37,9 @@
                         <th>Name</th>
                         <th>Category</th>
                         <th>Price</th>
+                        <th>Savings %</th>
                         <th>Discount</th>
+                        <th>Special</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -46,13 +48,23 @@
                     @foreach($items as $item)
                     <tr>
                         <td>
-                            @if($item->photo_path)
-                            <img src="{{ asset('storage/' . $item->photo_path) }}" alt="{{ $item->name }}" class="table-thumb">
+                            @if($item->photo_url)
+                                <img src="{{ $item->photo_url }}" alt="{{ $item->name }}" class="table-thumb">
                             @else
-                            <span class="table-thumb-placeholder">🍽️</span>
+                                <div class="table-thumb-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor"/>
+                                        <path d="M11 7H8V14C8 14.55 8.45 15 9 15H11V17H13V7H11V15H11V7Z" fill="currentColor"/>
+                                        <path d="M16 7H14V17H16V13C17.1 13 18 12.1 18 11V7H16V11H16V7Z" fill="currentColor"/>
+                                    </svg>
+                                </div>
                             @endif
                         </td>
-                        <td><strong>{{ $item->name }}</strong></td>
+                        <td>
+                            <div class="item-name-cell">
+                                <span class="item-name-text">{{ $item->name }}</span>
+                            </div>
+                        </td>
                         <td>{{ $item->category->name }}</td>
                         <td>${{ number_format($item->price, 0) }}</td>
                         <td>
@@ -62,6 +74,20 @@
                             @else
                                 -
                             @endif
+                        </td>
+                        <td>
+                            @if($item->discount_percentage > 0)
+                                <span class="badge badge-success" style="background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; padding: 4px 10px; border-radius: 12px; font-size: 11px;">
+                                    {{ $item->discount_percentage }}% Off
+                                </span>
+                            @else
+                                <span class="text-muted" style="font-size: 12px;">-</span>
+                            @endif
+                        </td>
+                        <td>
+                            <span class="status-badge {{ $item->is_special ? 'status-special' : 'status-regular' }}">
+                                {{ $item->is_special ? 'Yes' : 'No' }}
+                            </span>
                         </td>
                         <td>
                             <form action="{{ route('admin.items.toggle', $item) }}" method="POST" style="display:inline">

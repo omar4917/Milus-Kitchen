@@ -52,6 +52,10 @@
                     <span class="sidebar-icon">⭐</span>
                     Reviews
                 </a>
+                <a href="{{ route('admin.users.index') }}" class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                    <span class="sidebar-icon">👥</span>
+                    Users
+                </a>
                 <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
                     <span class="sidebar-icon">🏷️</span>
                     Specials
@@ -100,7 +104,40 @@
         </div>
     </div>
 
+    <audio id="orderAlertSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
     <script src="{{ asset('js/admin.js') }}"></script>
     @stack('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let lastOrderCount = null;
+            const checkOrders = () => {
+                fetch('{{ route('admin.orders.check') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (lastOrderCount !== null && data.count > lastOrderCount) {
+                            // New order arrived!
+                            document.getElementById('orderAlertSound').play().catch(e => console.log('Audio play blocked'));
+                            
+                            // Visual alert if possible
+                            if ('Notification' in window && Notification.permission === 'granted') {
+                                new Notification('New Order Received!', {
+                                    body: 'Order #' + data.count + ' new orders total.',
+                                    icon: '🍲'
+                                });
+                            } else if ('Notification' in window && Notification.permission !== 'denied') {
+                                Notification.requestPermission();
+                            }
+                        }
+                        lastOrderCount = data.count;
+                    })
+                    .catch(e => console.error('Error checking orders:', e));
+            };
+
+            // Check every 30 seconds
+            setInterval(checkOrders, 30000);
+            checkOrders(); // Initial check
+        });
+    </script>
 </body>
 </html>

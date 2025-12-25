@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\OrderStatusLog;
 use App\Models\Setting;
 use App\Mail\OrderConfirmation;
+use App\Notifications\OrderStatusNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -43,6 +44,7 @@ class OrderService
                 'customer_name' => $data['customer_name'],
                 'customer_phone' => $data['customer_phone'],
                 'customer_email' => $data['customer_email'] ?? null,
+                'user_id' => auth()->id(),
                 'delivery_type' => $data['delivery_type'],
                 'delivery_address' => $data['delivery_address'] ?? null,
                 'preferred_date' => $data['preferred_date'],
@@ -58,7 +60,7 @@ class OrderService
                 'total' => $total,
             ]);
 
-            // Create order items
+            // Create order items and deduct stock
             foreach ($cartDetails['items'] as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -68,6 +70,12 @@ class OrderService
                     'quantity' => $item['quantity'],
                     'line_total' => $item['price'] * $item['quantity'],
                 ]);
+
+                // Deduct stock
+                $menuItem = \App\Models\MenuItem::find($item['id']);
+                if ($menuItem) {
+                    $menuItem->decrement('stock_quantity', $item['quantity']);
+                }
             }
 
             // Log initial status
@@ -98,6 +106,16 @@ class OrderService
         
         $order->update(['status' => $newStatus]);
 
+        // If cancelled, restore stock
+        if ($newStatus === Order::STATUS_CANCELLED && $oldStatus !== Order::STATUS_CANCELLED) {
+            foreach ($order->items as $item) {
+                $menuItem = \App\Models\MenuItem::find($item->menu_item_id);
+                if ($menuItem) {
+                    $menuItem->increment('stock_quantity', $item->quantity);
+                }
+            }
+        }
+
         OrderStatusLog::create([
             'order_id' => $order->id,
             'user_id' => $userId,
@@ -106,12 +124,26 @@ class OrderService
             'notes' => $notes,
         ]);
 
+        // Send notification to user
+        if ($order->user) {
+            $prefs = $order->user->notification_prefs ?? ['email' => true, 'in_app' => true];
+            if ($prefs['in_app'] ?? true) {
+                $order->user->notify(new OrderStatusNotification($order));
+            }
+        }
+
         return true;
     }
 
     protected function sendConfirmationEmail(Order $order): void
     {
         if ($order->customer_email) {
+            // Check preferences if user is logged in
+            if ($order->user) {
+                $prefs = $order->user->notification_prefs ?? ['email' => true, 'in_app' => true];
+                if (!($prefs['email'] ?? true)) return;
+            }
+
             try {
                 Mail::to($order->customer_email)->queue(new OrderConfirmation($order));
             } catch (\Exception $e) {
@@ -126,15 +158,27 @@ class OrderService
         $today = today();
         
         $ordersQuery = Order::whereDate('created_at', $today);
+        $totalOrders = $ordersQuery->count();
+        $totalRevenue = $ordersQuery->where('status', '!=', Order::STATUS_CANCELLED)->sum('total');
         
         return [
-            'total_orders' => $ordersQuery->count(),
-            'total_revenue' => $ordersQuery->where('status', '!=', Order::STATUS_CANCELLED)->sum('total'),
-            'pending_orders' => Order::whereIn('status', [Order::STATUS_NEW, Order::STATUS_CONFIRMED, Order::STATUS_COOKING])->count(), // Global pending, not just today
+            'total_orders' => $totalOrders,
+            'total_revenue' => $totalRevenue,
+            'avg_order_value' => $totalOrders > 0 ? $totalRevenue / $totalOrders : 0,
+            'pending_orders' => Order::whereIn('status', [Order::STATUS_NEW, Order::STATUS_CONFIRMED, Order::STATUS_COOKING])->count(),
             'completed_orders' => Order::whereDate('created_at', $today)
                 ->where('status', Order::STATUS_COMPLETED)
                 ->count(),
         ];
+    }
+
+    public function getTopSellingItems(int $limit = 5): \Illuminate\Support\Collection
+    {
+        return \App\Models\OrderItem::select('item_name', DB::raw('SUM(quantity) as total_qty'))
+            ->groupBy('item_name')
+            ->orderByDesc('total_qty')
+            ->limit($limit)
+            ->get();
     }
 
     public function getWeeklyStats(): array

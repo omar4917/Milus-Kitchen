@@ -34,68 +34,128 @@
     
     <style>
         .site-menu {
-            width: 300px;
+            width: 320px;
             position: fixed;
             right: 0;
+            top: 0;
             z-index: 2000;
-            padding-top: 50px;
+            padding-top: 30px;
             padding-bottom: 50px;
             height: 100vh;
             overflow-y: auto;
-            background: #fff;
-            box-shadow: -10px 0 30px -10px rgba(0,0,0,0.1);
-            transition: 0.3s all ease;
+            background: linear-gradient(to bottom, #ffffff, #fafafa);
+            box-shadow: -15px 0 40px rgba(0,0,0,0.15);
+            transition: 0.3s transform ease;
             transform: translateX(100%);
         }
-        .site-menu.active { transform: translateX(0); }
+        .site-menu.site-menu-show { transform: translateX(0); }
         .site-menu .site-menu-header {
-            padding: 0 40px 30px 40px;
-            border-bottom: 1px solid #f2f2f2;
-            margin-bottom: 30px;
+            padding: 20px 30px 25px 30px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
             text-align: center;
         }
         .site-menu .brand-logo {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 900;
-            color: #000;
+            color: #1a1a2e;
             text-decoration: none;
             letter-spacing: -1px;
             font-family: 'Poppins', sans-serif;
         }
         .site-menu .brand-logo .dot { color: #ff7a5c; }
         
-        .site-menu ul { padding: 0 40px; margin: 0; }
-        .site-menu ul li { display: block; margin-bottom: 15px; }
+        .site-menu ul { padding: 0 20px; margin: 0; list-style: none; }
+        .site-menu ul li { 
+            display: block; 
+            margin-bottom: 8px;
+        }
         .site-menu ul li a {
             display: flex;
             align-items: center;
-            font-size: 16px;
-            color: #555;
+            font-size: 15px;
+            color: #444;
             text-decoration: none;
-            transition: 0.3s all ease;
-            padding: 10px 0;
+            transition: all 0.25s ease;
+            padding: 14px 18px;
             font-weight: 500;
+            border-radius: 12px;
+            background: transparent;
+        }
+        .site-menu ul li a:hover {
+            background: rgba(255, 122, 92, 0.08);
+            color: #ff5733;
+            transform: translateX(5px);
+        }
+        .site-menu ul li.active a {
+            background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 122, 92, 0.35);
         }
         .site-menu ul li a .icon {
             font-size: 20px;
-            margin-right: 15px;
-            color: #ccc;
-            transition: 0.3s all ease;
-            width: 25px;
-            text-align: center;
+            margin-right: 14px;
+            color: #aaa;
+            transition: all 0.25s ease;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
         }
-        .site-menu ul li a:hover, .site-menu ul li.active a { color: #ff7a5c; }
-        .site-menu ul li a:hover .icon, .site-menu ul li.active a .icon { color: #ff7a5c; }
+        .site-menu ul li a:hover .icon { 
+            color: #ff7a5c; 
+            background: rgba(255, 122, 92, 0.1);
+        }
+        .site-menu ul li.active a .icon { 
+            color: white; 
+            background: rgba(255,255,255,0.2);
+        }
         
-        .site-menu .divider { height: 1px; background: #eee; margin: 20px 0; }
+        .site-menu .divider { height: 1px; background: #eee; margin: 15px 20px; }
         
-        .site-menu .menu-social { margin-top: 30px; padding-top: 30px; border-top: 1px solid #f2f2f2; display: flex; justify-content: center; gap: 15px; }
+        .site-menu .menu-social { 
+            margin-top: 25px; 
+            padding: 20px; 
+            border-top: 1px solid #f0f0f0; 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+        }
         .site-menu .menu-social a {
-            width: 40px; height: 40px; border-radius: 50%; background: #f8f9fa; color: #333;
-            display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;
+            width: 44px; height: 44px; border-radius: 12px; background: #f5f5f5; color: #666;
+            display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.25s;
         }
-        .site-menu .menu-social a:hover { background: #ff7a5c; color: white; }
+        .site-menu .menu-social a:hover { 
+            background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); 
+            color: white; 
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(255, 122, 92, 0.35);
+        }
+        
+        /* Menu Overlay for click-outside-to-close */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
+
+    <!-- Menu Overlay (click to close) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <nav class="site-menu" id="ftco-navbar-spy">
         <div class="site-menu-inner" id="ftco-navbar">
@@ -159,7 +219,16 @@
             <div class="col-2 col-md-6 text-center site-logo-wrap">
                 <a href="{{ route('home') }}" class="site-logo">M</a>
             </div>
-            <div class="col-5 col-md-3 text-right menu-burger-wrap">
+            <div class="col-5 col-md-3 text-right menu-burger-wrap d-flex align-items-center justify-content-end">
+                @auth
+                <a href="{{ route('user.notifications') }}" class="notification-bell mr-3 position-relative">
+                    <span class="icon ion-android-notifications" style="font-size: 24px; color: #333;"></span>
+                    @php $unreadCount = auth()->user()->unreadNotifications->count(); @endphp
+                    @if($unreadCount > 0)
+                        <span class="badge badge-danger position-absolute" style="top: -5px; right: -5px; border-radius: 50%; font-size: 10px; padding: 3px 6px; background: #ef4444;">{{ $unreadCount }}</span>
+                    @endif
+                </a>
+                @endauth
                 <a href="#" class="site-nav-toggle js-site-nav-toggle"><i></i></a>
             </div>
         </div>
@@ -745,6 +814,28 @@ $(document).ready(function() {
             $('#cartSidebarOverlay').removeClass('active');
             $('body').css('overflow', '');
         }
+        // Close mobile menu on Escape
+        if (e.key === 'Escape' && $('body').hasClass('menu-open')) {
+            $('.js-site-nav-toggle').click();
+        }
+    });
+    
+    // Menu Overlay - close menu when clicking outside
+    $('#menuOverlay').on('click', function() {
+        if ($('body').hasClass('menu-open')) {
+            $('.js-site-nav-toggle').click();
+        }
+    });
+    
+    // Add overlay show/hide when menu toggles
+    $(document).on('click', '.js-site-nav-toggle', function() {
+        setTimeout(function() {
+            if ($('body').hasClass('menu-open')) {
+                $('#menuOverlay').addClass('active');
+            } else {
+                $('#menuOverlay').removeClass('active');
+            }
+        }, 50);
     });
 
     // Handle all add-to-cart forms via AJAX

@@ -12,6 +12,10 @@
             <!-- Image Header -->
             <div class="modal-header-img" style="height: 300px; width: 100%; position: relative;">
                 <img id="modalItemImage" src="" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover;">
+                <div id="modalItemDiscountBadge" style="position: absolute; top: 15px; left: 15px; background: #ea005e; color: white; padding: 6px 15px; border-radius: 20px; font-size: 14px; font-weight: 700; display: none; align-items: center; box-shadow: 0 4px 10px rgba(234, 0, 94, 0.3);">
+                    <span class="icon ion-pricetag" style="margin-right: 5px; font-size: 15px;"></span> 
+                    <span id="modalItemDiscountPercent"></span>% off
+                </div>
             </div>
 
             <div class="modal-body p-4">
@@ -63,9 +67,17 @@
         if (discountPrice && discountPrice < price) {
             $('#modalItemPriceOriginal').text('$' + price.toFixed(2)).show();
             $('#modalItemPriceDiscount').text('$' + discountPrice.toFixed(2));
+            
+            if (item.discount_percentage > 0) {
+                $('#modalItemDiscountPercent').text(item.discount_percentage);
+                $('#modalItemDiscountBadge').css('display', 'flex');
+            } else {
+                $('#modalItemDiscountBadge').hide();
+            }
         } else {
             $('#modalItemPriceOriginal').hide();
             $('#modalItemPriceDiscount').text('$' + price.toFixed(2));
+            $('#modalItemDiscountBadge').hide();
         }
         
         // Show Modal
