@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MenuItem extends Model
 {
     protected $fillable = [
-        'category_id',
         'name',
+        'country',
         'description',
         'price',
-        'photo_path',
+        'category_id',
         'is_available',
         'is_special',
+        'photo_path',
         'discount_price',
         'sort_order',
         'stock_quantity',

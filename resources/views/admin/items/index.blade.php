@@ -35,10 +35,11 @@
                     <tr>
                         <th>Photo</th>
                         <th>Name</th>
+                        <th>Country</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Savings %</th>
                         <th>Discount</th>
+                        <th>Savings %</th>
                         <th>Special</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -65,6 +66,7 @@
                                 <span class="item-name-text">{{ $item->name }}</span>
                             </div>
                         </td>
+                        <td>{{ $item->country ?? '-' }}</td>
                         <td>{{ $item->category->name }}</td>
                         <td>${{ number_format($item->price, 0) }}</td>
                         <td>

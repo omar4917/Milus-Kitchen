@@ -11,7 +11,7 @@
 
             <!-- Image Header -->
             <div class="modal-header-img" style="height: 300px; width: 100%; position: relative;">
-                <img id="modalItemImage" src="" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover;">
+                <img id="modalItemImage" src="" alt="Item Image" style="width: 100% !important; height: 100% !important; object-fit: cover !important;">
                 <div id="modalItemDiscountBadge" style="position: absolute; top: 15px; left: 15px; background: #ea005e; color: white; padding: 6px 15px; border-radius: 20px; font-size: 14px; font-weight: 700; display: none; align-items: center; box-shadow: 0 4px 10px rgba(234, 0, 94, 0.3);">
                     <span class="icon ion-pricetag" style="margin-right: 5px; font-size: 15px;"></span> 
                     <span id="modalItemDiscountPercent"></span>% off
@@ -19,8 +19,9 @@
             </div>
 
             <div class="modal-body p-4">
-                <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <h3 id="modalItemName" style="font-weight: 700; color: #333; margin: 0;"></h3>
+                    <span id="modalItemCountry" style="color: #ff7a5c; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"></span>
                 </div>
                 
                 <div class="mb-4">
@@ -55,6 +56,12 @@
         $('#modalItemId').val(item.id);
         $('#modalItemName').text(item.name);
         $('#modalItemDescription').text(item.description);
+        
+        if (item.country) {
+            $('#modalItemCountry').text(item.country).show();
+        } else {
+            $('#modalItemCountry').hide();
+        }
         
         // Image
         var imgSrc = item.photo_path ? '{{ asset("storage") }}/' + item.photo_path : '{{ asset("images/img_1.jpg") }}';

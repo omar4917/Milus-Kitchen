@@ -1,56 +1,54 @@
-@forelse($menuItems as $item)
-<div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up">
-    <div class="menu-item-card h-100" 
-         onclick='openItemModal(@json($item))'
-         style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.3s ease; cursor: pointer;">
-        
-        <div class="item-image" style="height: 250px; overflow: hidden; position: relative;">
-            @if($item->photo_path)
-            <img src="{{ asset('storage/' . $item->photo_path) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+@forelse($menuItems as $index => $item)
+@php
+    $itemJson = json_encode([
+        'id' => $item->id,
+        'name' => $item->name,
+        'country' => $item->country,
+        'description' => $item->description,
+        'price' => $item->price,
+        'discount_price' => $item->discount_price,
+        'photo_path' => $item->photo_path,
+        'discount_percentage' => $item->discount_percentage
+    ]);
+@endphp
+<div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="{{ ($index % 2) * 100 }}">
+    <div class="premium-card-horizontal" onclick='openItemModal({{ $itemJson }})'>
+        <div class="card-img-wrap">
+            @if($item->image)
+            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="card-img">
             @else
-            <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}" class="card-img">
             @endif
             
             @if($item->discount_percentage > 0)
-                <!-- Discount Badge -->
-                <div style="position: absolute; top: 15px; left: 15px; background: #ea005e; color: white; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(234, 0, 94, 0.3);">
-                    <span class="icon ion-pricetag" style="margin-right: 5px; font-size: 14px;"></span> 
-                    {{ $item->discount_percentage }}% off
-                </div>
-            @elseif($item->category)
-                <span class="badge badge-primary" style="position: absolute; top: 15px; left: 15px; padding: 5px 10px; border-radius: 5px;">{{ $item->category->name }}</span>
-            @endif
-
-            @if($item->is_special)
-            <span class="badge badge-danger" style="position: absolute; top: 15px; right: 15px; padding: 5px 10px; border-radius: 5px;">Special</span>
+            <div style="position: absolute; top: 15px; left: 15px; background: #ea005e; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; box-shadow: 0 4px 10px rgba(234, 0, 94, 0.3);">
+                {{ $item->discount_percentage }}% OFF
+            </div>
             @endif
         </div>
         
-        <div class="item-body d-flex flex-column" style="padding: 25px; flex: 1;">
-            <h3 style="font-size: 1.25rem; margin-bottom: 5px; font-weight: 700; color: #333;">{{ $item->name }}</h3>
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1;">{{ \Illuminate\Support\Str::limit($item->description, 100) }}</p>
+        <div class="card-content">
+            @if($item->country)
+            <div class="country-badge">{{ $item->country }}</div>
+            @endif
+            @if($item->category)
+            <span class="category-label">{{ $item->category->name }}</span>
+            @endif
+            <h3 class="mb-2">{{ $item->name }}</h3>
+            <p class="description">{{ Str::limit($item->description, 85) }}</p>
             
-            <div class="d-flex justify-content-between align-items-center mt-auto">
+            <div class="card-footer-actions">
                 <div class="price-wrap">
                     @if($item->discount_price && $item->discount_price < $item->price)
-                        <div class="d-flex flex-column">
-                            <span style="color: #999; text-decoration: line-through; font-size: 0.85rem; font-weight: 500;">
-                                <span style="font-size: 0.9em">$</span>{{ number_format($item->price, 0) }}
-                            </span>
-                            <div style="color: #ea005e; font-size: 1.3rem; font-weight: 800; line-height: 1;">
-                                <sup style="font-size: 0.6em; top: -0.2em; font-weight: 600;">$</sup>{{ number_format($item->discount_price, 0) }}
-                            </div>
+                        <div style="display: flex; align-items: baseline;">
+                            <span class="price">${{ number_format($item->discount_price, 2) }}</span>
+                            <span class="old-price">${{ number_format($item->price, 2) }}</span>
                         </div>
                     @else
-                        <div style="color: #333; font-size: 1.3rem; font-weight: 800; line-height: 1;">
-                            <sup style="font-size: 0.6em; top: -0.2em; font-weight: 600;">$</sup>{{ number_format($item->price, 0) }}
-                        </div>
+                        <span class="price">${{ number_format($item->price, 2) }}</span>
                     @endif
                 </div>
-                <!-- Fake button just for visual cue -->
-                <button class="btn btn-sm px-3" style="background: #f5f5f5; color: #333; border-radius: 20px; font-weight: 600;" onclick="event.stopPropagation(); openItemModal(@json($item))">
-                    <span class="icon ion-plus-round"></span>
-                </button>
+                <button type="button" class="btn-order">Order</button>
             </div>
         </div>
     </div>

@@ -28,6 +28,12 @@
             </div>
 
             <div class="form-group">
+                <label for="country">Country/Origin (e.g. Japanese, Italian)</label>
+                <input type="text" id="country" name="country" value="{{ old('country') }}" placeholder="Enter dish origin">
+                @error('country')<span class="error-text">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="form-group">
                 <label for="description">Description</label>
                 <textarea id="description" name="description" rows="3">{{ old('description') }}</textarea>
             </div>

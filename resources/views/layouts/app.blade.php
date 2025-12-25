@@ -11,6 +11,182 @@
     <style>
         body, h1, h2, h3, h4, h5, h6, p, a, span, div { font-family: 'Inter', 'Poppins', sans-serif !important; }
         .heading { font-family: 'Poppins', sans-serif !important; font-weight: 600 !important; }
+
+        /* Universal Premium Horizontal Cards */
+        .premium-card-horizontal {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 240px;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .premium-card-horizontal:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.12) !important;
+            border-color: rgba(255,122,92,0.2);
+        }
+        .premium-card-horizontal .card-img-wrap {
+            width: 42%;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+        .premium-card-horizontal .card-img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+        .premium-card-horizontal:hover .card-img {
+            transform: scale(1.1);
+        }
+        .premium-card-horizontal .card-content {
+            width: 58%;
+            padding: 25px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .premium-card-horizontal .country-badge {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            color: #ff7a5c;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .premium-card-horizontal .category-label {
+            color: #ff7a5c;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .premium-card-horizontal h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .premium-card-horizontal .description {
+            color: #777;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .premium-card-horizontal .card-footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .premium-card-horizontal .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff7a5c;
+        }
+        .premium-card-horizontal .old-price {
+            color: #bbb;
+            text-decoration: line-through;
+            font-size: 0.95rem;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+        .premium-card-horizontal .btn-order {
+            background: #f8f9fa;
+            color: #333;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .premium-card-horizontal:hover .btn-order {
+            background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,122,92,0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .premium-card-horizontal {
+                flex-direction: column;
+                height: auto;
+            }
+            .premium-card-horizontal .card-img-wrap, 
+            .premium-card-horizontal .card-content {
+                width: 100%;
+            }
+            .premium-card-horizontal .card-img-wrap {
+                height: 200px;
+            }
+        }
+
+        /* Menu Tabs Styles */
+        .site-tab-nav {
+            border-bottom: none !important;
+        }
+        .site-tab-nav .nav-item .nav-link {
+            color: #888;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            border: none !important;
+            padding: 15px 25px;
+            position: relative;
+            background: transparent !important;
+            transition: all 0.3s ease;
+        }
+        .site-tab-nav .nav-item .nav-link.active {
+            color: #ff7a5c !important;
+        }
+        .site-tab-nav .nav-item .nav-link.active:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25px;
+            right: 25px;
+            height: 3px;
+            background: #ff7a5c;
+            border-radius: 3px;
+        }
+
+        .btn-outline-custom {
+            border: 2px solid #ff7a5c;
+            color: #ff7a5c;
+            border-radius: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 13px;
+            padding: 12px 35px;
+            background: transparent;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        .btn-outline-custom:hover {
+            background: #ff7a5c;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(255,122,92,0.3);
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
