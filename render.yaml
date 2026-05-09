@@ -1,10 +1,9 @@
 services:
   - type: web
     name: laravel-synchrove
-    runtime: node
+    runtime: docker
     plan: free
-    buildCommand: "composer install --no-dev --optimize-autoloader && npm install && npm run build"
-    startCommand: "vendor/bin/heroku-php-apache2 public/"
+    region: ohio
     envVars:
       - key: APP_ENV
         value: production
@@ -12,15 +11,18 @@ services:
         value: false
       - key: APP_URL
         value: https://laravel.synchrove.com
+      - key: NODE_VERSION
+        value: 20
       - key: DB_CONNECTION
         value: pgsql
       - key: APP_KEY
-        sync: false # You will paste this manually in the dashboard
+        sync: false # You will paste your base64 key manually in the Render dashboard
       - key: DATABASE_URL
         fromDatabase:
           name: lilus_kitchen
           property: connectionString
 
 databases:
-  - name: meal-db
+  - name: lilus_kitchen
     plan: free
+    region: ohio
