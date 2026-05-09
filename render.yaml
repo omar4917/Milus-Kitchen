@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: laravel-synchrove
+    runtime: php
+    plan: free
+    buildCommand: "composer install --no-dev --optimize-autoloader && npm install && npm run build"
+    startCommand: "vendor/bin/heroku-php-apache2 public/"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://laravel.synchrove.com
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: APP_KEY
+        sync: false # You will paste this manually in the dashboard
+      - key: DATABASE_URL
+        fromDatabase:
+          name: meal-db
+          property: connectionString
+
+databases:
+  - name: meal-db
+    plan: free
