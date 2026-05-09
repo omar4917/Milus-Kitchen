@@ -1,4 +1,4 @@
-// Auntie's Kitchen - Public JavaScript
+// Lilus Kitchen - Public JavaScript
 
 document.addEventListener("DOMContentLoaded", function () {
     // Mobile Navigation Toggle

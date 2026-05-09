@@ -1,4 +1,4 @@
-// Auntie's Kitchen - Admin JavaScript
+// Lilus Kitchen - Admin JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
     // Sidebar Toggle

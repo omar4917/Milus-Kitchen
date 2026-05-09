@@ -33,7 +33,7 @@
                 <div class="mb-4">
                     <h5>Contact</h5>
                     <p>Phone: +880 367 251 167</p>
-                    <p>Email: meal@restaurant.com</p>
+                    <p>Email: info@liluskitchen.com</p>
                 </div>
                 <div>
                     <h5>Follow Us</h5>

@@ -1,4 +1,4 @@
-# Auntie's Kitchen - Home-Made Food Ordering System
+# Lilus Kitchen - Home-Made Food Ordering System
 
 A production-ready MVP for a home-made food business with customer ordering and admin dashboard.
 
@@ -13,7 +13,7 @@ A production-ready MVP for a home-made food business with customer ordering and 
 
 ```bash
 # Clone and enter directory
-cd Restaurant
+cd Lilus-Kitchen
 
 # Copy environment file
 copy .env.example .env
@@ -35,7 +35,7 @@ docker-compose exec app php artisan storage:link
 
 -   **Customer Site**: http://localhost:8080
 -   **Admin Panel**: http://localhost:8080/admin/login
-    -   Email: `admin@auntieskitchen.com`
+    -   Email: `admin@liluskitchen.com`
     -   Password: `password`
 
 ## Features
@@ -65,8 +65,8 @@ docker-compose exec app php artisan storage:link
 curl -fsSL https://get.docker.com | sh
 
 # Clone repository
-git clone <your-repo> /var/www/aunties-kitchen
-cd /var/www/aunties-kitchen
+git clone <your-repo> /var/www/lilus-kitchen
+cd /var/www/lilus-kitchen
 
 # Create production env
 cp .env.example .env.production
@@ -94,11 +94,11 @@ docker-compose -f docker-compose.prod.yml exec app php artisan db:seed --force
 apt install certbot
 
 # Get certificate
-certbot certonly --webroot -w /var/www/aunties-kitchen/public -d auntieskitchen.com
+certbot certonly --webroot -w /var/www/lilus-kitchen/public -d liluskitchen.com
 
 # Copy certs to nginx ssl folder
-cp /etc/letsencrypt/live/auntieskitchen.com/fullchain.pem docker/nginx/ssl/
-cp /etc/letsencrypt/live/auntieskitchen.com/privkey.pem docker/nginx/ssl/
+cp /etc/letsencrypt/live/liluskitchen.com/fullchain.pem docker/nginx/ssl/
+cp /etc/letsencrypt/live/liluskitchen.com/privkey.pem docker/nginx/ssl/
 
 # Restart nginx
 docker-compose -f docker-compose.prod.yml restart nginx
@@ -108,7 +108,7 @@ docker-compose -f docker-compose.prod.yml restart nginx
 
 ```bash
 # Add to crontab -e
-0 2 * * * docker-compose -f /var/www/aunties-kitchen/docker-compose.prod.yml exec -T db pg_dump -U postgres aunties_kitchen > /backups/db-$(date +\%Y\%m\%d).sql
+0 2 * * * docker-compose -f /var/www/lilus-kitchen/docker-compose.prod.yml exec -T db pg_dump -U postgres lilus_kitchen > /backups/db-$(date +\%Y\%m\%d).sql
 ```
 
 ## Environment Variables

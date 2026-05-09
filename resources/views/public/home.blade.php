@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-center text-center">
                 <div class="col-md-10" data-aos="fade-up">
-                    <h2 class="heading mb-5">Welcome to Meal, where food speaks with your palate</h2>
+                    <h2 class="heading mb-5">Welcome to Lilus Kitchen, where food speaks with your palate</h2>
                     <p class="sub-heading mb-5">Experience the finest dining with our exquisite menu</p>
                     <p><a href="{{ route('menu') }}" class="btn btn-outline-white px-5 py-3">View Our Menu</a></p>
                 </div>
@@ -161,7 +161,7 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12 col-lg-8 section-heading">
                 <h2 class="heading mb-5">The Restaurant</h2>
-                <p>Welcome to Meal Restaurant, where culinary excellence meets warm hospitality. Our chefs craft each dish with passion and the finest ingredients, creating memorable dining experiences.</p>
+                <p>Welcome to Lilus Kitchen, where culinary excellence meets warm hospitality. Our chefs craft each dish with passion and the finest ingredients, creating memorable dining experiences.</p>
                 <p>Experience the perfect blend of traditional recipes and modern culinary techniques in a sophisticated atmosphere.</p>
                 <p><a href="{{ route('about') }}" class="btn btn-primary">Learn More About Us</a></p>
             </div>
@@ -170,7 +170,7 @@
 </div>
 
 <div class="section bg-white pt-2 pb-2 text-center" data-aos="fade">
-    <p><img src="{{ asset('images/bg_hero.png') }}" alt="Meal Restaurant" class="img-fluid"></p>
+    <p><img src="{{ asset('images/bg_hero.png') }}" alt="Lilus Kitchen" class="img-fluid"></p>
 </div>
 
 <div class="section bg-light" id="section-menu" data-aos="fade-up">

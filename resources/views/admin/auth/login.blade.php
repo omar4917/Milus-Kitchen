@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Admin - Auntie's Kitchen</title>
+    <title>Login | Admin - Lilus Kitchen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -97,7 +97,7 @@
         <div class="login-header">
             <div class="brand-icon">🍲</div>
             <h1>Admin Login</h1>
-            <p>Auntie's Kitchen Dashboard</p>
+            <p>Lilus Kitchen Dashboard</p>
         </div>
 
         @if($errors->any())

@@ -21,7 +21,7 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12 col-lg-8 section-heading">
                 <h2 class="heading mb-5">The Restaurant</h2>
-                <p>Welcome to Meal Restaurant, where culinary excellence meets warm hospitality. For over three decades, we have been serving our community with the finest dishes prepared by our talented chefs.</p>
+                <p>Welcome to Lilus Kitchen, where culinary excellence meets warm hospitality. For over three decades, we have been serving our community with the finest dishes prepared by our talented chefs.</p>
                 <p>Our restaurant was founded with a simple mission: to provide exceptional food in a welcoming environment. We source only the freshest ingredients and combine traditional recipes with modern culinary techniques.</p>
                 <p>Every dish that leaves our kitchen is crafted with passion and attention to detail. We believe that great food brings people together, and we're honored to be a part of your special moments.</p>
             </div>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="section bg-white pt-2 pb-2 text-center" data-aos="fade">
-    <p><img src="{{ asset('images/bg_hero.png') }}" alt="Meal Restaurant" class="img-fluid"></p>
+    <p><img src="{{ asset('images/bg_hero.png') }}" alt="Lilus Kitchen" class="img-fluid"></p>
 </div>
 
 <div class="section bg-white" data-aos="fade-up">

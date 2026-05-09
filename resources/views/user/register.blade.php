@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register - Meal Restaurant</title>
+    <title>Register - Lilus Kitchen</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -75,7 +75,7 @@
 <body>
     <div class="auth-wrapper">
         <div class="auth-card" data-aos="fade-up">
-            <a href="{{ route('home') }}" class="logo-link">🍽️ Meal</a>
+            <a href="{{ route('home') }}" class="logo-link">🍽️ Lilus</a>
             <h2>Create Account</h2>
             
             @if($errors->any())

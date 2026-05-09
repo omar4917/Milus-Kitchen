@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>@yield('title', 'Meal Restaurant') | Fine Dining</title>
+    <title>@yield('title', 'Lilus Kitchen') | Fine Dining</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Meal Restaurant - Where food speaks with your palate" />
+    <meta name="description" content="Lilus Kitchen - Where food speaks with your palate" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -100,7 +100,7 @@
     <nav class="site-menu" id="ftco-navbar-spy">
         <div class="site-menu-inner" id="ftco-navbar">
             <div class="site-menu-header">
-                <a href="{{ route('home') }}" class="brand-logo">Meal<span class="dot">.</span></a>
+                <a href="{{ route('home') }}" class="brand-logo">Lilus<span class="dot">.</span></a>
             </div>
             <ul class="list-unstyled">
                 <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
@@ -157,7 +157,7 @@
         <div class="row align-items-center">
             <div class="col-5 col-md-3"></div>
             <div class="col-2 col-md-6 text-center site-logo-wrap">
-                <a href="{{ route('home') }}" class="site-logo">M</a>
+                <a href="{{ route('home') }}" class="site-logo">L</a>
             </div>
             <div class="col-5 col-md-3 text-right menu-burger-wrap">
                 <a href="#" class="site-nav-toggle js-site-nav-toggle"><i></i></a>
@@ -271,8 +271,8 @@
             <div class="row">
                 <div class="col-md-4 mb-5">
                     <div class="footer-widget">
-                        <h3 class="mb-4">About Meal</h3>
-                        <p>Experience culinary excellence at Meal Restaurant. We serve delicious food made with the finest locally-sourced ingredients in Toronto.</p>
+                        <h3 class="mb-4">About Lilus Kitchen</h3>
+                        <p>Experience culinary excellence at Lilus Kitchen. We serve delicious food made with the finest locally-sourced ingredients in Toronto.</p>
                         <p><a href="{{ route('menu') }}" class="btn btn-primary btn-outline-primary">View Menu</a></p>
                     </div>
                 </div>
@@ -288,8 +288,8 @@
                     <div class="footer-widget">
                         <h3 class="mb-4">Contact Us</h3>
                         <p>📍 123 Queen Street West<br>Toronto, ON M5H 2M9</p>
-                        <p>📞 (416) 555-MEAL</p>
-                        <p>✉️ info@meal-restaurant.ca</p>
+                        <p>📞 (416) 555-LILU</p>
+                        <p>✉️ info@liluskitchen.com</p>
                         <ul class="list-unstyled social" style="margin-top: 15px;">
                             <li><a href="#"><span class="fa fa-facebook"></span></a></li>
                             <li><a href="#"><span class="fa fa-twitter"></span></a></li>
@@ -300,7 +300,7 @@
             </div>
             <div class="row pt-5">
                 <div class="col-md-12 text-center">
-                    <p>&copy; {{ date('Y') }} Meal Restaurant, Toronto. All rights reserved. 🍁</p>
+                    <p>&copy; {{ date('Y') }} Lilus Kitchen, Toronto. All rights reserved. 🍁</p>
                 </div>
             </div>
         </div>

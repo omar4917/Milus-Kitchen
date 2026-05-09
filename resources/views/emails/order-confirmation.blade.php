@@ -22,7 +22,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>🍲 Auntie's Kitchen</h1>
+        <h1>🍲 Lilus Kitchen</h1>
         <p>Thank you for your order!</p>
     </div>
 
@@ -109,7 +109,7 @@
     <div class="footer">
         <p>Questions about your order?</p>
         <p><strong>📞 +880 1XXX-XXXXXX</strong></p>
-        <p>© {{ date('Y') }} Auntie's Kitchen</p>
+        <p>© {{ date('Y') }} Lilus Kitchen</p>
     </div>
 </body>
 </html>

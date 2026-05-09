@@ -312,7 +312,7 @@
                         <div class="form-group">
                             <label>Phone Number *</label>
                             <input type="tel" name="customer_phone" value="{{ old('customer_phone', auth()->user()->phone ?? '') }}" 
-                                   placeholder="(416) 555-0123" required>
+                                   placeholder="(416) 555-LILU" required>
                             @error('customer_phone')<span class="error-text">{{ $message }}</span>@enderror
                         </div>
                         <div class="form-group">
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const notes = {
         cod: 'Cash payment will be collected on delivery.',
         card: 'You will be redirected to secure payment after placing order.',
-        interac: 'Send e-Transfer to: payments@meal.ca with order number.'
+        interac: 'Send e-Transfer to: payments@liluskitchen.com with order number.'
     };
 
     function updateDelivery() {
