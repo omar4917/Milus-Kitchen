@@ -217,7 +217,7 @@
                                             <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                                                 @csrf
                                                 <input type="hidden" name="menu_item_id" value="{{ $item->id }}">
-                                                <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 50%; width: 35px; height: 35px; padding: 0;">+</button>
+                                                <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 50%; width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
                                             </form>
                                         </div>
                                     </div>

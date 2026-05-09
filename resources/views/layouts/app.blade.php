@@ -474,7 +474,7 @@ $(document).ready(function() {
         var btn = form.find('button[type="submit"]');
         var originalText = btn.html();
         
-        btn.html('Adding...').prop('disabled', true);
+        btn.html(btn.width() < 50 ? '...' : 'Adding...').prop('disabled', true);
         
         $.ajax({
             url: form.attr('action'),
@@ -490,7 +490,11 @@ $(document).ready(function() {
                     $('#cartBadgeCount').text(response.cart.count);
                 }
                 
-                btn.html('✓ Added!');
+                if (btn.width() < 50) {
+                    btn.html('✓');
+                } else {
+                    btn.html('✓ Added!');
+                }
                 setTimeout(function() { btn.html(originalText).prop('disabled', false); }, 1500);
             },
             error: function(xhr) {

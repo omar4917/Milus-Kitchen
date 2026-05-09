@@ -1,0 +1,17 @@
+node_modules
+vendor
+public/storage
+.git
+.env
+storage/*.key
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.idea
+.vscode
+*.bak
+*.swp
+*.zip
+*.tar.gz

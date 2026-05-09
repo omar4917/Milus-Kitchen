@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Add visual feedback
             const btn = this.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
-            btn.textContent = "Added!";
+            btn.textContent = btn.offsetWidth < 50 ? "✓" : "Added!";
             btn.disabled = true;
 
             setTimeout(() => {
