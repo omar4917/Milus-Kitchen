@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: laravel-synchrove
+    name: milus-kitchen
     runtime: docker
     plan: free
     region: ohio
@@ -14,7 +14,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://laravel.synchrove.com
+        value: https://synchrove.com
       - key: DB_CONNECTION
         value: pgsql
       - key: APP_KEY
