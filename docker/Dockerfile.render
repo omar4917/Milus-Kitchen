@@ -37,7 +37,7 @@ RUN npm install && npm run build
 COPY docker/nginx/render.conf /etc/nginx/sites-available/default
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Expose port 80
 EXPOSE 80
