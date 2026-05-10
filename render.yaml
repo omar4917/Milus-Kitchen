@@ -3,7 +3,7 @@ services:
     name: milus-kitchen
     runtime: docker
     plan: free
-    region: ohio
+    region: singapore
     dockerfilePath: docker/Dockerfile.render
     dockerContext: .
     envVars:
@@ -27,4 +27,4 @@ services:
 databases:
   - name: lilus_kitchen
     plan: free
-    region: virginia
+    region: singapore
