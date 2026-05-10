@@ -20,7 +20,7 @@ services:
         value: pgsql
       - key: APP_KEY
         sync: false
-      - key: DATABASE_URL
+      - key: DB_URL
         fromDatabase:
           name: lilus_kitchen
           property: connectionString
