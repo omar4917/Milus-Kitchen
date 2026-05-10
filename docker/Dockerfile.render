@@ -43,7 +43,7 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 EXPOSE 80
 
 # Start script
-RUN echo "#!/bin/sh\nphp-fpm -D\nnginx -g 'daemon off;'" > /usr/local/bin/start.sh
+RUN echo "#!/bin/sh\nphp artisan migrate --force\nphp-fpm -D\nnginx -g 'daemon off;'" > /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 CMD ["/usr/local/bin/start.sh"]
