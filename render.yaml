@@ -1,14 +1,12 @@
 services:
   - type: web
     name: laravel-synchrove
-    runtime: node
+    runtime: docker
     plan: free
     region: ohio
-    buildCommand: "composer install --no-dev --optimize-autoloader && npm install && npm run build"
-    startCommand: "vendor/bin/heroku-php-apache2 public/"
+    dockerfilePath: docker/Dockerfile.render
+    dockerContext: .
     envVars:
-      - key: BUILDPACK_URL
-        value: https://github.com/heroku/heroku-buildpack-php
       - key: NODE_VERSION
         value: 20
       - key: APP_ENV
