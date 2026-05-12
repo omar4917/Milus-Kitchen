@@ -8,9 +8,9 @@
         <div class="container">
             <div class="row align-items-center justify-content-center text-center">
                 <div class="col-md-10" data-aos="fade-up">
-                    <h2 class="heading mb-5">Welcome to Lilus Kitchen, where food speaks with your palate</h2>
-                    <p class="sub-heading mb-5">Experience the finest dining with our exquisite menu</p>
-                    <p><a href="{{ route('menu') }}" class="btn btn-outline-white px-5 py-3">View Our Menu</a></p>
+                    <h2 class="heading mb-3" style="font-size: 2.5rem;">Welcome to Lilus Kitchen</h2>
+                    <p class="sub-heading mb-4" style="font-size: 1rem;">Where food speaks with your palate</p>
+                    <p><a href="{{ route('menu') }}" class="btn btn-outline-white px-4 py-2" style="font-size: 0.9rem;">View Our Menu</a></p>
                 </div>
             </div>
         </div>
@@ -18,40 +18,40 @@
 </div>
 
 <!-- How It Works Section -->
-<div class="section bg-light" data-aos="fade-up" style="padding: 80px 0;">
+<div class="section bg-light" data-aos="fade-up" style="padding: 50px 0;">
     <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
+        <div class="row section-heading justify-content-center mb-4">
             <div class="col-md-8 text-center">
-                <h2 class="heading mb-3" style="color: #333; font-weight: 600;">How It Works</h2>
-                <p class="sub-heading" style="color: #666;">Getting your favorite home-made food is simple and quick.</p>
+                <h2 class="heading mb-2" style="color: #333; font-weight: 600; font-size: 2rem;">How It Works</h2>
+                <p class="sub-heading" style="color: #666; font-size: 0.9rem;">Getting your favorite home-made food is simple and quick.</p>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-4 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="0">
-                <div style="background: #fffbf5; border-radius: 20px; padding: 50px 30px 40px; text-align: center; height: 100%; position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: all 0.3s ease;">
-                    <div style="position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(255,122,92,0.4);">1</div>
-                    <div style="width: 70px; height: 70px; margin: 0 auto 20px; background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ff7a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M7 7h10M7 12h10M7 17h6"/></svg>
+            <div class="col-md-4 col-sm-6 mb-3" data-aos="fade-up" data-aos-delay="0">
+                <div style="background: #fffbf5; border-radius: 15px; padding: 35px 20px 25px; text-align: center; height: 100%; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; box-shadow: 0 3px 10px rgba(255,122,92,0.3);">1</div>
+                    <div style="width: 55px; height: 55px; margin: 0 auto 15px; background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff7a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M7 7h10M7 12h10M7 17h6"/></svg>
                     </div>
                     <h4 style="font-weight: 600; margin-bottom: 12px; color: #333;">Browse Menu</h4>
                     <p style="color: #777; font-size: 0.95rem; line-height: 1.6;">Explore our delicious selection of authentic home-made dishes</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div style="background: linear-gradient(135deg, #fff8f0 0%, #fff2e6 100%); border: 2px solid #ff7a5c; border-radius: 20px; padding: 50px 30px 40px; text-align: center; height: 100%; position: relative; box-shadow: 0 8px 30px rgba(255,122,92,0.15); transition: all 0.3s ease;">
-                    <div style="position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(255,122,92,0.4);">2</div>
-                    <div style="width: 70px; height: 70px; margin: 0 auto 20px; background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <div class="col-md-4 col-sm-6 mb-3" data-aos="fade-up" data-aos-delay="100">
+                <div style="background: linear-gradient(135deg, #fff8f0 0%, #fff2e6 100%); border: 2px solid #ff7a5c; border-radius: 15px; padding: 35px 20px 25px; text-align: center; height: 100%; position: relative; box-shadow: 0 6px 20px rgba(255,122,92,0.1); transition: all 0.3s ease;">
+                    <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; box-shadow: 0 3px 10px rgba(255,122,92,0.3);">2</div>
+                    <div style="width: 55px; height: 55px; margin: 0 auto 15px; background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                     </div>
                     <h4 style="font-weight: 600; margin-bottom: 12px; color: #333;">Add to Cart</h4>
                     <p style="color: #777; font-size: 0.95rem; line-height: 1.6;">Select your favorites and customize your perfect order</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                <div style="background: #fffbf5; border-radius: 20px; padding: 50px 30px 40px; text-align: center; height: 100%; position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: all 0.3s ease;">
-                    <div style="position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(255,122,92,0.4);">3</div>
-                    <div style="width: 70px; height: 70px; margin: 0 auto 20px; background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ff7a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            <div class="col-md-4 col-sm-6 mb-3" data-aos="fade-up" data-aos-delay="200">
+                <div style="background: #fffbf5; border-radius: 15px; padding: 35px 20px 25px; text-align: center; height: 100%; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7a5c 0%, #ff5733 100%); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; box-shadow: 0 3px 10px rgba(255,122,92,0.3);">3</div>
+                    <div style="width: 55px; height: 55px; margin: 0 auto 15px; background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff7a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
                     </div>
                     <h4 style="font-weight: 600; margin-bottom: 12px; color: #333;">Enjoy!</h4>
                     <p style="color: #777; font-size: 0.95rem; line-height: 1.6;">We'll deliver fresh to your door or you can pick up</p>
@@ -64,10 +64,10 @@
 
 <div class="section" data-aos="fade-up">
     <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
+        <div class="row section-heading justify-content-center mb-3">
             <div class="col-md-8 text-center">
-                <h2 class="heading mb-3">Find your best food</h2>
-                <p class="sub-heading mb-5">Discover our signature dishes crafted with passion</p>
+                <h2 class="heading mb-2" style="font-size: 2rem;">Our Specialties</h2>
+                <p class="sub-heading mb-4" style="font-size: 0.9rem;">Discover our signature dishes crafted with passion</p>
             </div>
         </div>
         <div class="row">
@@ -82,13 +82,13 @@
                     <div class="ftco-46-text ftco-46-arrow-left">
                         @if(isset($featuredItems[0]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[0]->category ? $featuredItems[0]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[0]->name }}</h3>
-                        <p class="mb-5">{{ Str::limit($featuredItems[0]->description, 120) }}</p>
-                        <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[0]->price, 2) }}</strong></p>
+                        <h3 class="ftco-46-heading" style="font-size: 1.1rem; margin-bottom: 15px;">{{ $featuredItems[0]->name }}</h3>
+                        <p class="mb-4" style="font-size: 0.85rem;">{{ Str::limit($featuredItems[0]->description, 80) }}</p>
+                        <p><strong style="color: #ff7a5c; font-size: 1rem;">${{ number_format($featuredItems[0]->price, 2) }}</strong></p>
                         <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                             @csrf
                             <input type="hidden" name="menu_item_id" value="{{ $featuredItems[0]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
+                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
                         </form>
                         @else
                         <h4 class="ftco-46-subheading">Vegies</h4>
@@ -105,13 +105,13 @@
                     <div class="ftco-46-text ftco-46-arrow-right">
                         @if(isset($featuredItems[2]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[2]->category ? $featuredItems[2]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[2]->name }}</h3>
-                        <p class="mb-5">{{ Str::limit($featuredItems[2]->description, 100) }}</p>
-                        <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[2]->price, 2) }}</strong></p>
+                        <h3 class="ftco-46-heading" style="font-size: 1.1rem; margin-bottom: 15px;">{{ $featuredItems[2]->name }}</h3>
+                        <p class="mb-4" style="font-size: 0.85rem;">{{ Str::limit($featuredItems[2]->description, 80) }}</p>
+                        <p><strong style="color: #ff7a5c; font-size: 1rem;">${{ number_format($featuredItems[2]->price, 2) }}</strong></p>
                         <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                             @csrf
                             <input type="hidden" name="menu_item_id" value="{{ $featuredItems[2]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
+                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
                         </form>
                         @else
                         <h4 class="ftco-46-subheading">Food</h4>
@@ -124,23 +124,23 @@
                     <div class="ftco-46-text ftco-46-arrow-up">
                         @if(isset($featuredItems[3]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[3]->category ? $featuredItems[3]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[3]->name }}</h3>
-                        <p class="mb-5">{{ Str::limit($featuredItems[3]->description, 100) }}</p>
-                        <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[3]->price, 2) }}</strong></p>
+                        <h3 class="ftco-46-heading" style="font-size: 1.1rem; margin-bottom: 15px;">{{ $featuredItems[3]->name }}</h3>
+                        <p class="mb-4" style="font-size: 0.85rem;">{{ Str::limit($featuredItems[3]->description, 80) }}</p>
+                        <p><strong style="color: #ff7a5c; font-size: 1rem;">${{ number_format($featuredItems[3]->price, 2) }}</strong></p>
                         <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                             @csrf
                             <input type="hidden" name="menu_item_id" value="{{ $featuredItems[3]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
+                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
                         </form>
                         @elseif(isset($featuredItems[1]))
                         <h4 class="ftco-46-subheading">{{ $featuredItems[1]->category ? $featuredItems[1]->category->name : 'Food' }}</h4>
-                        <h3 class="ftco-46-heading">{{ $featuredItems[1]->name }}</h3>
-                        <p class="mb-5">{{ Str::limit($featuredItems[1]->description, 100) }}</p>
-                        <p><strong style="color: #ff7a5c; font-size: 1.2rem;">${{ number_format($featuredItems[1]->price, 2) }}</strong></p>
+                        <h3 class="ftco-46-heading" style="font-size: 1.1rem; margin-bottom: 15px;">{{ $featuredItems[1]->name }}</h3>
+                        <p class="mb-4" style="font-size: 0.85rem;">{{ Str::limit($featuredItems[1]->description, 80) }}</p>
+                        <p><strong style="color: #ff7a5c; font-size: 1rem;">${{ number_format($featuredItems[1]->price, 2) }}</strong></p>
                         <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                             @csrf
                             <input type="hidden" name="menu_item_id" value="{{ $featuredItems[1]->id }}">
-                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
+                            <button type="submit" class="btn-link" style="border: none; background: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;">Add to Cart <span class="ion-android-arrow-forward"></span></button>
                         </form>
                         @else
                         <h4 class="ftco-46-subheading">Food</h4>
@@ -239,9 +239,9 @@
 
 <div class="section bg-white" data-aos="fade-up">
     <div class="container">
-        <div class="row mb-5">
+        <div class="row mb-4">
             <div class="col-md-12 section-heading text-center">
-                <h2 class="heading mb-5">Meet The Chefs</h2>
+                <h2 class="heading mb-3">Meet The Chefs</h2>
             </div>
         </div>
         @php
@@ -289,10 +289,10 @@
 
 <div class="section bg-white services-section" data-aos="fade-up">
     <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
+        <div class="row section-heading justify-content-center mb-4">
             <div class="col-md-8 text-center">
-                <h2 class="heading mb-3">Other Services</h2>
-                <p class="sub-heading mb-5">What makes us special</p>
+                <h2 class="heading mb-2" style="font-size: 1.8rem;">Other Services</h2>
+                <p class="sub-heading mb-3" style="font-size: 0.85rem;">What makes us special</p>
             </div>
         </div>
         <div class="row">
@@ -370,13 +370,13 @@
 
 <div class="section" data-aos="fade-up" id="section-contact">
     <div class="container">
-        <div class="row section-heading justify-content-center mb-5">
+        <div class="row section-heading justify-content-center mb-4">
             <div class="col-md-8 text-center">
-                <h2 class="heading mb-3">Get In Touch</h2>
+                <h2 class="heading mb-2" style="font-size: 1.8rem;">Get In Touch</h2>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-10 p-5 form-wrap">
+            <div class="col-md-10 p-4 form-wrap">
                 <form action="{{ route('contact.submit') }}" method="POST">
                     @csrf
                     <div class="row mb-4">

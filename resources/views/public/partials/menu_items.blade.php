@@ -4,7 +4,7 @@
          onclick='openItemModal(@json($item))'
          style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: transform 0.3s ease; cursor: pointer;">
         
-        <div class="item-image" style="height: 160px; overflow: hidden; position: relative;">
+        <div class="item-image" style="height: 130px; overflow: hidden; position: relative;">
             @if($item->photo_path)
             <img src="{{ asset('storage/' . $item->photo_path) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
             @else
@@ -26,9 +26,9 @@
             @endif
         </div>
         
-        <div class="item-body d-flex flex-column" style="padding: 15px; flex: 1;">
-            <h3 style="font-size: 1rem; margin-bottom: 4px; font-weight: 700; color: #333;">{{ $item->name }}</h3>
-            <p style="color: #666; font-size: 0.8rem; margin-bottom: 10px; flex-grow: 1; line-height: 1.4;">{{ \Illuminate\Support\Str::limit($item->description, 70) }}</p>
+        <div class="item-body d-flex flex-column" style="padding: 12px; flex: 1;">
+            <h3 style="font-size: 0.9rem; margin-bottom: 4px; font-weight: 700; color: #333;">{{ $item->name }}</h3>
+            <p style="color: #666; font-size: 0.75rem; margin-bottom: 8px; flex-grow: 1; line-height: 1.4;">{{ \Illuminate\Support\Str::limit($item->description, 60) }}</p>
             
             <div class="d-flex justify-content-between align-items-center mt-auto">
                 <div class="price-wrap">

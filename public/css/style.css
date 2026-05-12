@@ -5,14 +5,14 @@ html {
 body {
   background: #fff;
   font-family: "Open Sans", Arial, sans-serif;
-  font-size: 20px;
-  line-height: 1.8;
-  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
   color: gray;
 }
 
 p, ul, ol {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 a {
@@ -96,8 +96,8 @@ textarea.form-control {
 
 .site-menu ul {
   position: relative;
-  margin-top: 150px;
-  margin-bottom: 50px;
+  margin-top: 100px;
+  margin-bottom: 30px;
 }
 
 .site-menu ul > li {
@@ -160,7 +160,7 @@ textarea.form-control {
 
 /* Site Header */
 .site-header {
-  padding: 3em 30px;
+  padding: 1.5em 30px;
   position: absolute;
   top: 0;
   z-index: 900;
@@ -329,7 +329,7 @@ textarea.form-control {
 }
 
 .section-heading h2 {
-  font-size: 50px;
+  font-size: 32px;
 }
 
 @media (max-width: 991.98px) {
@@ -401,8 +401,7 @@ textarea.form-control {
 }
 
 .ftco-46 .ftco-46-subheading {
-  font-size: 14px;
-  color: #b3b3b3;
+  font-size: 11px;
   color: #ff7a5c;
   text-transform: uppercase;
   letter-spacing: .2em;
@@ -410,15 +409,16 @@ textarea.form-control {
 
 .ftco-46 .ftco-46-heading {
   text-transform: uppercase;
-  line-height: 1.5;
-  font-size: 20px;
-  margin-bottom: 30px;
+  line-height: 1.4;
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
 .ftco-46 .ftco-46-image {
   background-size: cover;
   background-position: center center;
   position: relative;
+  height: 300px;
 }
 
 .ftco-46 .ftco-46-image:before {
@@ -440,7 +440,7 @@ textarea.form-control {
 }
 
 .ftco-46 .ftco-46-text {
-  padding: 40px;
+  padding: 25px;
   background: #fff;
 }
 
@@ -529,11 +529,11 @@ textarea.form-control {
 }
 
 .ftco-38 .ftco-38-header .ftco-38-heading {
-  font-size: 30px;
+  font-size: 20px;
   color: #000;
   margin: 0;
-  font-weight: 300;
-  margin-bottom: 10px;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
 @media (max-width: 991.98px) {
@@ -544,8 +544,9 @@ textarea.form-control {
 
 .ftco-38 .ftco-38-header .ftco-38-subheading {
   color: #b3b3b3;
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   letter-spacing: .1em;
+  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -556,14 +557,14 @@ textarea.form-control {
 }
 
 .ftco-38 .ftco-38-header img {
-  width: 200px;
+  width: 120px;
   border-radius: 50%;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .btn-link {
   text-transform: uppercase;
-  font-size: 12px !important;
+  font-size: 10px !important;
   letter-spacing: .15em;
   text-decoration: none !important;
   -webkit-transition: .3s all ease;
@@ -909,8 +910,8 @@ textarea.form-control {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  height: calc(100vh);
-  min-height: 700px;
+  height: 80vh;
+  min-height: 500px;
   position: relative;
 }
 
@@ -926,8 +927,8 @@ textarea.form-control {
 
 .owl-carousel.home-slider .slider-item .slider-text, .owl-carousel.home-slider-loop-false .slider-item .slider-text {
   color: #fff;
-  height: calc(100vh);
-  min-height: 700px;
+  height: 80vh;
+  min-height: 500px;
 }
 
 .owl-carousel.home-slider .slider-item .slider-text .child-name, .owl-carousel.home-slider-loop-false .slider-item .slider-text .child-name {
@@ -1163,8 +1164,11 @@ textarea.form-control {
   bottom: -7px;
 }
 
+.ftco-46 .ftco-46-row {
+  margin-bottom: 0;
+}
 .section {
-  padding: 7em 0;
+  padding: 4em 0;
   z-index: 2;
   position: relative;
 }
@@ -1663,7 +1667,7 @@ textarea.form-control {
 
 .ftco-footer {
   background: #121212;
-  padding: 7em 0;
+  padding: 3em 0;
   font-size: 15px;
   font-weight: 400;
 }
