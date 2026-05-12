@@ -52,6 +52,10 @@
                     <span class="sidebar-icon">⭐</span>
                     Reviews
                 </a>
+                <a href="{{ route('admin.chefs.index') }}" class="sidebar-link {{ request()->routeIs('admin.chefs*') ? 'active' : '' }}">
+                    <span class="sidebar-icon">👨‍🍳</span>
+                    Chefs
+                </a>
                 <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
                     <span class="sidebar-icon">🏷️</span>
                     Specials

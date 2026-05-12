@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ChefController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,5 +114,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settings
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+        // Chefs
+        Route::resource('chefs', ChefController::class)->except(['show']);
     });
 });

@@ -54,7 +54,7 @@ class CheckoutController extends Controller
             'preferred_date' => 'required|date|after_or_equal:today',
             'time_slot' => 'required|string',
             'notes' => 'nullable|string|max:500',
-            'payment_method' => 'required|in:cod,card,interac',
+            'payment_method' => 'required|in:cod,card,interac,apple_google_pay',
             'save_info' => 'nullable|boolean',
         ]);
 
@@ -98,8 +98,8 @@ class CheckoutController extends Controller
     protected function getPaymentInstructions(): array
     {
         return [
-            'bkash' => Setting::get('bkash_instructions', 'Send payment to: 01XXXXXXXXX. Include your phone number as reference.'),
-            'nagad' => Setting::get('nagad_instructions', 'Send payment to: 01XXXXXXXXX. Include your phone number as reference.'),
+            'interac' => Setting::get('etransfer_email', 'Send e-Transfer to: payments@liluskitchen.com. Include your order number as the message.'),
+            'apple_google_pay' => 'Tap to pay on delivery, or pay via the secure checkout link sent to your email.',
         ];
     }
 }

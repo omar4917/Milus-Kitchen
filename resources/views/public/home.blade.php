@@ -200,24 +200,24 @@
                     <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}" id="pills-{{ $category->id }}" role="tabpanel">
                         <div class="row">
                             @foreach($category->menuItems as $item)
-                            <div class="col-md-6 col-lg-3 mb-4">
-                                <div class="menu-item-card h-100" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease;">
-                                    <div style="height: 180px; overflow: hidden;">
+                            <div class="col-md-6 col-lg-3 mb-3">
+                                <div class="menu-item-card h-100" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.06); transition: transform 0.3s ease;">
+                                    <div style="height: 140px; overflow: hidden;">
                                         @if($item->image)
                                         <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                         @else
                                         <img src="{{ asset('images/img_1.jpg') }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <div style="padding: 20px;">
-                                        <h5 style="font-weight: 700; margin-bottom: 8px; color: #333;">{{ $item->name }}</h5>
-                                        <p style="color: #777; font-size: 0.85rem; margin-bottom: 15px; min-height: 40px;">{{ Str::limit($item->description, 60) }}</p>
+                                    <div style="padding: 15px;">
+                                        <h5 style="font-weight: 700; margin-bottom: 5px; color: #333; font-size: 0.95rem;">{{ $item->name }}</h5>
+                                        <p style="color: #777; font-size: 0.8rem; margin-bottom: 10px; min-height: 32px; line-height: 1.4;">{{ Str::limit($item->description, 50) }}</p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <span style="color: #ff7a5c; font-size: 1.2rem; font-weight: 700;">${{ number_format($item->price, 2) }}</span>
+                                            <span style="color: #ff7a5c; font-size: 1.05rem; font-weight: 700;">${{ number_format($item->price, 2) }}</span>
                                             <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-cart">
                                                 @csrf
                                                 <input type="hidden" name="menu_item_id" value="{{ $item->id }}">
-                                                <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 50%; width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
+                                                <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 50%; width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; line-height: 1; font-size: 14px;">+</button>
                                             </form>
                                         </div>
                                     </div>
@@ -244,35 +244,45 @@
                 <h2 class="heading mb-5">Meet The Chefs</h2>
             </div>
         </div>
+        @php
+            $chefs = \App\Models\Chef::where('is_active', true)->orderBy('sort_order')->get();
+        @endphp
         <div class="row">
+            @forelse($chefs as $chef)
+            <div class="col-md-6 {{ $loop->first ? 'pr-md-5' : 'pl-md-5' }} text-center mb-5">
+                <div class="ftco-38">
+                    <div class="ftco-38-img">
+                        <div class="ftco-38-header">
+                            @if($chef->photo_path)
+                            <img src="{{ asset('storage/' . $chef->photo_path) }}" alt="{{ $chef->name }}">
+                            @else
+                            <img src="{{ asset('images/chef_1.jpg') }}" alt="{{ $chef->name }}">
+                            @endif
+                            <h3 class="ftco-38-heading">{{ $chef->name }}</h3>
+                            <p class="ftco-38-subheading">{{ $chef->title }}</p>
+                        </div>
+                        <div class="ftco-38-body">
+                            <p>{{ $chef->bio }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
             <div class="col-md-6 pr-md-5 text-center mb-5">
                 <div class="ftco-38">
                     <div class="ftco-38-img">
                         <div class="ftco-38-header">
                             <img src="{{ asset('images/chef_1.jpg') }}" alt="Chef">
-                            <h3 class="ftco-38-heading">Daniel Graham</h3>
+                            <h3 class="ftco-38-heading">Our Chef</h3>
                             <p class="ftco-38-subheading">Master Chef</p>
                         </div>
                         <div class="ftco-38-body">
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                            <p>Our talented chefs craft each dish with passion and the finest ingredients.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 pl-md-5 text-center mb-5">
-                <div class="ftco-38">
-                    <div class="ftco-38-img">
-                        <div class="ftco-38-header">
-                            <img src="{{ asset('images/chef_2.jpg') }}" alt="Chef">
-                            <h3 class="ftco-38-heading">Nick Browning</h3>
-                            <p class="ftco-38-subheading">Master Chef</p>
-                        </div>
-                        <div class="ftco-38-body">
-                            <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. It is a paradisematic country.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </div>

@@ -351,17 +351,22 @@
                             <label class="option-item">
                                 <input type="radio" name="payment_method" value="cod" 
                                        {{ old('payment_method', $userPayment) === 'cod' ? 'checked' : '' }}>
-                                <span class="option-text">💵 Cash on Delivery</span>
+                                <span class="option-text">💵 Cash on Delivery / Pickup</span>
                             </label>
                             <label class="option-item">
                                 <input type="radio" name="payment_method" value="card"
                                        {{ old('payment_method', $userPayment) === 'card' ? 'checked' : '' }}>
-                                <span class="option-text">💳 Online Payment</span>
+                                <span class="option-text">💳 Credit / Debit Card</span>
                             </label>
                             <label class="option-item">
                                 <input type="radio" name="payment_method" value="interac"
                                        {{ old('payment_method', $userPayment) === 'interac' ? 'checked' : '' }}>
                                 <span class="option-text">🏦 Interac e-Transfer</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="radio" name="payment_method" value="apple_google_pay"
+                                       {{ old('payment_method', $userPayment) === 'apple_google_pay' ? 'checked' : '' }}>
+                                <span class="option-text">📱 Apple Pay / Google Pay</span>
                             </label>
                         </div>
                         <div class="payment-icons">
@@ -369,8 +374,10 @@
                             <span>VISA</span>
                             <span>Mastercard</span>
                             <span>Interac</span>
+                            <span>Apple Pay</span>
+                            <span>Google Pay</span>
                         </div>
-                        <p class="payment-note" id="paymentNote">Cash payment will be collected on delivery.</p>
+                        <p class="payment-note" id="paymentNote">Cash payment will be collected on delivery or pickup.</p>
                     </div>
                 </div>
 
@@ -473,9 +480,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const paymentNote = document.getElementById('paymentNote');
     
     const notes = {
-        cod: 'Cash payment will be collected on delivery.',
-        card: 'You will be redirected to secure payment after placing order.',
-        interac: 'Send e-Transfer to: payments@liluskitchen.com with order number.'
+        cod: 'Cash payment will be collected on delivery or pickup.',
+        card: 'You will be redirected to secure payment after placing order. We accept Visa, Mastercard, and Interac Debit.',
+        interac: 'Send e-Transfer to: payments@liluskitchen.com — Include your order number as the message.',
+        apple_google_pay: 'Tap to pay on delivery, or pay in advance via the secure checkout link we\'ll send you.'
     };
 
     function updateDelivery() {
